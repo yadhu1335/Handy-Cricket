@@ -42,8 +42,9 @@ function play(val) {
         if (val == random) {
           console.log("you win");
           alert("YOU WIN!!");
-          document.getElementById("option").disabled = true;
-
+          document.querySelectorAll(".game-button").forEach((button) => {
+            button.disabled = true;
+          });
           return;
         } else {
           if (score > int_val) {
@@ -59,8 +60,9 @@ function play(val) {
         console.log("You loose");
         alert("YOU LOOSE!!");
         console.log("score=" + score);
-        document.getElementById("option").disabled = true;
-
+        document.querySelectorAll(".game-button").forEach((button) => {
+          button.disabled = true;
+        });
         return;
       }
     }
@@ -84,7 +86,9 @@ function play(val) {
         if (val == random) {
           console.log("you are out, YOU LOOSE");
           alert("YOU ARE OUT!!");
-          document.getElementById("option").disabled = true;
+          document.querySelectorAll(".game-button").forEach((button) => {
+            button.disabled = true;
+          });
           return;
         } else {
           if (score > int_val) {
@@ -101,7 +105,9 @@ function play(val) {
         console.log("You WINN");
         alert("YOU WINN!!");
         console.log("score=" + score);
-        document.getElementById("option").disabled = true;
+        document.querySelectorAll(".game-button").forEach((button) => {
+          button.disabled = true;
+        });
         return;
       }
     }
