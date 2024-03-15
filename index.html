@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>oddoreven</title>
+  </head>
+  <body>
+    <div id="oddoreven">
+      <h3>Choose any one</h3>
+      <button id="odd" onclick="oddeven('odd')">ODD</button>
+      <button id="even" onclick="oddeven('even')">EVEN</button>
+    </div>
+
+    <!-- <div style="display: none">Toss=<span id="Toss"></span></div> -->
+
+    <div>
+      you chose: <span id="OEchoice"></span> <br />
+      <p style="display: none">Toss=<span id="Toss"></span></p>
+    </div>
+    <!-- you choose:odd or even -->
+
+    <div id="cointoss" style="display: none">
+      <h3>Tap on the button</h3>
+      <button id="Coin" onclick="check()">Coin</button>
+      <p>Toss Result : <span id="cointossresult"></span></p>
+    </div>
+
+    <div id="usercorrect" style="display: none">
+      <h4>Which one do u choose</h4>
+      <button id="bat">Batting</button>
+      <button id="bowl">Bowling</button>
+      <p>you chose: <span id="userchoice"></span></p>
+    </div>
+
+    <div id="compcorrect" style="display: none">
+      <h2>Computer Choice is : <span id="computerchoice"></span></h2>
+    </div>
+
+    <br />
+    <br /><br /><br /><br />
+    <!-- from game.html -->
+    <div id="prevstatus">
+      <h4>You are currently: <span id="currently"> </span></h4>
+    </div>
+
+    <div id="Status"></div>
+    <!--Batting or bowling  -->
+
+    <div id="choices">
+      <button onclick="play('1')">1</button>
+      <button onclick="play('2')">2</button>
+      <button onclick="play('3')">3</button>
+      <button onclick="play('4')">4</button>
+      <button onclick="play('5')">5</button>
+      <button onclick="play('6')">6</button>
+    </div>
+    <!-- users choice of button -->
+    <div id="Player">Player choice:</div>
+    <div id="Computer">Computers choice:</div>
+    <div id="Score">Score:</div>
+
+    <!-- will use later -->
+    <!-- <a href="game.html"
+      ><button id="nextpage" disabled>Click here to start the match</button>
+    </a> -->
+  </body>
+  <script src="index.js"></script>
+</html>
