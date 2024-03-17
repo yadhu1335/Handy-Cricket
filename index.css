@@ -1,0 +1,125 @@
+/* General styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f0f0f0;
+}
+
+button {
+  border: 0;
+  background: #4caf50;
+  color: white;
+  transition: background-color 0.3s;
+  margin: 10px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 2px 1px rgba(0, 120, 212, 0.5);
+}
+
+button:disabled {
+  background-color: #dddddd;
+}
+
+input[type="text"] {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid lightgray;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 2px 1px rgba(0, 120, 212, 0.5);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 15px;
+  background-color: white;
+  box-shadow: 0 4px 6px 0 hsla(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* Heading */
+.heading {
+  text-align: center;
+  padding: 10px;
+  background-color: lightblue;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+/* Top section (Start Button and Player Input) */
+.start-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+/* Bottom section (Results, Dice, and Logs) */
+.result-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin: 10px;
+}
+
+.dice-image,
+.previous-result,
+.logs {
+  border-radius: 4px;
+  padding: 10px;
+  background-color: lightblue;
+  box-shadow: 0 4px 6px 0 hsla(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dice-image {
+  font-size: 12px;
+  text-align: center;
+  justify-content: center;
+}
+
+.logs {
+  height: 250px;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
+/* Responsive styles for small screens (less than 768px) */
+@media (max-width: 768px) {
+  .result-section {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .dice-image,
+  .previous-result,
+  .logs {
+    height: 100%;
+    width: 100%;
+  }
+
+  .dice-image img {
+    height: auto;
+    width: 100%;
+  }
+}

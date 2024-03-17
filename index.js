@@ -78,13 +78,6 @@ function check() {
 
 // game.js
 
-// let bat = youare === "bat" ? true : false;
-// let bowl = bat == true ? false : true;
-// let lowercaseyouare = youare.toLowerCase();
-
-// let bat = lowercaseyouare === "bat" ? true : false;
-// let bowl = bat == true ? false : true;
-
 let ch = ["1", "2", "3", "4", "5", "6"]; //choice for battobowl
 
 let score = 1;
@@ -117,6 +110,7 @@ function play(val) {
         console.log("SCORE to win=" + score);
         document.getElementById("score").innerText = score;
         bat = false;
+        document.getElementById("currently").innerText = "bowling";
       } else {
         score = score + int_val;
         document.getElementById("score").innerText = score;
@@ -124,6 +118,7 @@ function play(val) {
       console.log("CURRENT SCORE=" + score);
     } else {
       // user is bowling
+
       console.log("You are now bowling");
 
       if (score > 0) {
@@ -173,7 +168,7 @@ function play(val) {
         alert("Switching SIDES.Computer is OUT");
         console.log("SCORE to win=" + score);
         document.getElementById("score").innerText = score;
-
+        document.getElementById("currently").innerText = "batting";
         bowl = false;
         bat = true;
       } else {
