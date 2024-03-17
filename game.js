@@ -2,6 +2,7 @@
 
 // let batorbowl=""
 // let youare = "bowling";
+document.getElementById("currently").innerText = youare;
 
 let bat = youare == "bat" ? true : false;
 let bowl = bat == true ? false : true;
