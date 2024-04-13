@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RollCricket</title>
+  </head>
+  <body>
+    <p id="players">in room.html</p>
+    <div id="insufficient_players">
+      <h1>Insufficient number of players</h1>
+    </div>
+
+    <div id="match" style="display: none">
+      <div id="heads_or_tails">
+        <button id="heads">Heads</button>
+        <button id="tails">Tails</button>
+      </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script defer src="../js/room.js"></script>
+  </body>
+</html>

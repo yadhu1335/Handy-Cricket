@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RollCricket</title>
+  </head>
+  <body>
+    <div>
+      <h3>Enter name</h3>
+      <input type="text" id="nameinput" placeholder="Enter a name" />
+      <button id="submitbtn">submit</button>
+    </div>
+    <div id="game_selection" style="display: none">
+      <button id="joinbtn">Join Room</button>
+      <div id="join_room" style="display: none">
+        <input type="text" id="room_id" placeholder="enter room id" />
+        <button id="join_room_btn">Join</button>
+      </div>
+      <button id="createbtn">Create Room</button>
+      <p>or</p>
+      <button id="randbtn">Join Random Room</button>
+    </div>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
+</html>
