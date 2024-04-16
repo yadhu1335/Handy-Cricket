@@ -22,6 +22,8 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("A user connected");
 
+  socket.emit("socketid", socket.id); //sending socketid value to the front end js
+
   // when the user clicks on "create room" button in index.js a roomid is created and passed. Then the roomid is added into an array called rooms and an object called Rooms.
   // why 2 rooom? ans= the array rooms is used for checking wheater the room exists and it will be complicated to call the obj recuurently for suh a trivial task. Rooms is mostly used for the server side. room(array) is passed to index.html so that when a user tries to join a room it can check wheater the room exists or not.
   socket.on("addroom", (room_id) => {
@@ -80,30 +82,74 @@ io.on("connection", (socket) => {
         for (const [socketid, choice] of Object.entries(Rooms[room_id].toss)) {
           if (choice === "tails") {
             console.log(`${socketid} has won the toss`);
-            socket.to(socketid).emit("toss result", "won", "tails");
+            io.to(socketid).emit("toss result", "won", "tails");
           } else {
             console.log(`${socketid} lose the toss`);
-            socket.to(socketid).emit("toss result", "lose", "tails");
+            io.to(socketid).emit("toss result", "lost", "tails");
           }
         }
       } else {
         for (const [socketid, choice] of Object.entries(Rooms[room_id].toss)) {
           if (choice === "heads") {
             console.log(`${socketid} has won the toss`);
-            socket.to(socketid).emit("toss result", "won", "heads");
+            io.to(socketid).emit("toss result", "won", "heads");
           } else {
             console.log(`${socketid} lose the toss`);
-            socket.to(socketid).emit("toss result", "lose", "heads");
+            io.to(socketid).emit("toss result", "lost", "heads");
           }
         }
       }
     }
   });
 
+  socket.on("bat_or_bowl choice", (bat_or_bowl, room_id) => {
+    console.log("Inside bat_or_bowl ");
+    //checking if toss propert exist if it exist then delete it
+    if (Rooms[room_id].hasOwnProperty("toss")) {
+      delete Rooms[room_id].toss; //deleting toss property from the object
+    }
+
+    if (!Rooms[room_id].hasOwnProperty("bat_or_bowl")) {
+      //if bat or bowl property does not exist then
+      Rooms[room_id].bat_or_bowl = {};
+    }
+    //the for loop is to create a new property bat_or_bowl which will store what the user is performing now
+    for (const [socketid] of Object.entries(Rooms[room_id].users)) {
+      // Check if the property is directly on the object, not on the prototype chain
+      if (Rooms[room_id].users.hasOwnProperty(socketid)) {
+        Rooms[room_id].bat_or_bowl[socketid] = null;
+
+        if (socketid === socket.id) {
+          console.log(`The socketid and socket.id is same`);
+          Rooms[room_id].bat_or_bowl[socketid] = bat_or_bowl;
+        } else {
+          console.log(`The socketid and socket.id is different`);
+          let opposite = bat_or_bowl === "bat" ? "bowl" : "bat";
+          Rooms[room_id].bat_or_bowl[socketid] = opposite;
+        }
+      }
+    }
+    console.log(`updated rooms obj ${JSON.stringify(Rooms[room_id])}`);
+
+    for (const [socketid, value] of Object.entries(Rooms[room_id].bat_or_bowl))
+      io.to(socketid).emit("bat_or_bowl result", value);
+  });
+
+  socket.on(
+    "choose value",
+    (targetId, room_id, mySocketID, you_are_currently) => {
+      //if Games{} obj does not exist in the obj
+      if (!Rooms[room_id].hasOwnProperty("Game")) {
+        Rooms[room_id].Games = {};
+      } else {
+      }
+    }
+  );
+
   socket.on("disconnect", () => {
     console.log(`${socket.id} aka disconnected`);
   });
 });
 server.listen(PORT, () =>
-  console.log(`Server is up and running on port ${PORT}`)
+  console.log(`Server is up and running on port http://localhost:${PORT}`)
 );
