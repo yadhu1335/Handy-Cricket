@@ -35,6 +35,8 @@ joinbtn.addEventListener("click", function () {
       } else {
         console.log("room does not exist ");
         alert("enter valid room id");
+        // location.href = `../views/room.html?room=${room_id}&username=${username}`;
+        //for the time being only!!!Correct it
       }
     });
   });

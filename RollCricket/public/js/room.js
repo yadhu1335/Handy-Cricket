@@ -8,7 +8,7 @@ socket.on("socketid", (mySocketID) => {
   mySocketID = mySocketID;
   console.log(`my socket id is ${mySocketID}`);
 });
-
+let prevScore = 0;
 // Get the URL search parameters
 const params = new URLSearchParams(window.location.search);
 // Get the value of roomid from the URL
@@ -140,11 +140,83 @@ socket.on("start match", () => {
         console.log(`${targetId} has been pressed`);
         socket.emit(
           "choose value",
-          targetId,
+          parseInt(targetId),
           room_id,
-          mySocketID,
           you_are_currently
         );
       }
+      disable_enable_Buttons("disable");
     });
+
+  function disable_enable_Buttons(enable_or_disable) {
+    //value for enable_or_disable is either "enable" or "disable";
+    if (enable_or_disable === "disable") {
+      console.log(`disabling buttons`);
+      for (let i = 1; i <= 6; i++) {
+        document.getElementById(i + "").disabled = true;
+      }
+    }
+
+    if (enable_or_disable === "enable") {
+      console.log(`enabling buttons`);
+      for (let i = 1; i <= 6; i++) {
+        document.getElementById(i + "").disabled = false;
+      }
+    }
+  }
+
+  socket.on("update you_are_currently", (value) => {
+    document.getElementById("score").innerText = `score=${0}`;
+    if (value === "bat") {
+      document.getElementById(
+        "prevScore"
+      ).innerHTML = `score to beat is ${prevScore}`;
+    } else {
+      document.getElementById(
+        "prevScore"
+      ).innerText = `Your score=${prevScore}`;
+    }
+    console.log(`Changing sides...signal from server `);
+    document.getElementById("you_are_currently").style.display = "none";
+    createTag(
+      "h4",
+      `Switching sides.....You are now ${value}ing`,
+      Game_area,
+      "you_are_currently_updated"
+    );
+    alert("switching sides");
+    disable_enable_Buttons("enable");
+    //code for enabling value buttons(1 to 6)
+    you_are_currently = value;
+  });
+
+  socket.on("score", (score) => {
+    document.getElementById("score").innerText = `score=${score}`;
+    prevScore = score;
+    disable_enable_Buttons("enable");
+  });
+
+  socket.on("final result", (score, win_or_loose, largestScore) => {
+    disable_enable_Buttons("disable");
+    let final_resut_div = document.getElementById("final result");
+    if (win_or_loose === "win") {
+      createTag("h3", "Congrats!! You win the game", final_resut_div);
+      createTag("h3", `Score=${score}`, final_resut_div);
+      console.log(`You win`);
+      createTag("button", "Go Back", final_resut_div, "go_back_btn");
+    } else {
+      createTag("h3", "Sorry!! You loose the game", final_resut_div);
+      createTag(
+        "h3",
+        `Your score=${score} , u lost by ${score - largestScore}`,
+        final_resut_div
+      );
+      console.log(`you loose`);
+      createTag("button", "Go Back", final_resut_div, "go_back_btn");
+    }
+
+    document.getElementById("go_back_btn").addEventListener("click", () => {
+      location.href = `../views/index.html`;
+    });
+  });
 });
