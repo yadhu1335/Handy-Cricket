@@ -196,9 +196,9 @@ socket.on("start match", () => {
     disable_enable_Buttons("enable");
   });
 
+  let final_resut_div = document.getElementById("final result");
   socket.on("final result", (score, win_or_loose, largestScore) => {
     disable_enable_Buttons("disable");
-    let final_resut_div = document.getElementById("final result");
     if (win_or_loose === "win") {
       createTag("h3", "Congrats!! You win the game", final_resut_div);
       createTag("h3", `Score=${score}`, final_resut_div);
@@ -218,5 +218,15 @@ socket.on("start match", () => {
     document.getElementById("go_back_btn").addEventListener("click", () => {
       location.href = `../views/index.html`;
     });
+  });
+
+  socket.on("won_by_default", () => {
+    console.log(`Win by default`);
+    createTag("h3", "Player Disconnected. You win by Default", final_resut_div);
+    createTag("button", "Go Back", final_resut_div, "go_back_btn");
+    document.getElementById("go_back_btn").addEventListener("click", () => {
+      location.href = `../views/index.html`;
+    });
+    disable_enable_Buttons("disable");
   });
 });

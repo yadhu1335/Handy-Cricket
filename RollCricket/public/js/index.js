@@ -17,6 +17,10 @@ function uuidv4() {
 
 submitbtn.addEventListener("click", function () {
   username = document.getElementById("nameinput").value;
+  if (username === "") {
+    alert("Enter valid username");
+    return;
+  }
   console.log(`usernameis ${username}`);
   document.getElementById("game_selection").style.display = "block";
 });

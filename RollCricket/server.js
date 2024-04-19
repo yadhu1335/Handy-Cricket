@@ -11,7 +11,7 @@ const io = socketio(server);
 
 let rooms = []; //array containing the room id
 let Rooms = {}; //obj mapping roomid with username and usercount
-// let usercount = 0;
+let socketRoomMap = {}; //saving room id along with socket id
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -68,8 +68,8 @@ io.on("connection", (socket) => {
       Rooms[room_id].users[socket.id] = username;
       console.log(`${username} joined in ${room_id}`);
       console.log(`users in ${room_id} are ${JSON.stringify(Rooms[room_id])}`);
-
       Rooms[room_id].game[socket.id] = { score: 1, warning: 0 };
+      socketRoomMap[socket.id] = room_id;
     }
     //when the number of users hit 2 the game starts this if condition is used for that purpose.
     if (Rooms[room_id].userCount === 2) {
@@ -187,35 +187,7 @@ io.on("connection", (socket) => {
         if (Rooms[room_id].switch_side == true) {
           // //both had their turn in batting
           // // Initialize variables to store the largest and least scores and their associated socket IDs
-          // let largestScore = -Infinity;
-          // let leastScore = Infinity;
-          // let largestSocketId;
-          // let leastSocketId;
 
-          // // Iterate through the game object
-          // for (const [socketId, { score }] of Object.entries(
-          //   Rooms[room_id].game
-          // )) {
-          //   if (score > largestScore) {
-          //     largestScore = score; // Update the largest score
-          //     largestSocketId = socketId; // Update the socket ID associated with the largest score
-          //   }
-          //   if (score < leastScore) {
-          //     leastScore = score; // Update the least score
-          //     leastSocketId = socketId; // Update the socket ID associated with the least score
-          //   }
-          // }
-          // console.log(
-          //   `Socket ID with the largest score: ${largestSocketId}, Score: ${largestScore},Socket ID with the least score: ${leastSocketId}, Score: ${leastScore}`
-          // );
-
-          // io.to(largestSocketId).emit("final result", largestScore, "win");
-          // io.to(leastSocketId).emit(
-          //   "final result",
-          //   leastScore,
-          //   "lose",
-          //   largestScore
-          // );
           repeat(Rooms, room_id);
         } else {
           //One of the person in game didnt have chnce to bat.
@@ -248,6 +220,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  //didnt think of another name
   function repeat(Rooms, room_id) {
     let largestScore = -Infinity;
     let leastScore = Infinity;
@@ -274,7 +247,10 @@ io.on("connection", (socket) => {
   }
 
   socket.on("disconnect", () => {
-    console.log(`${socket.id} aka disconnected`);
+    console.log(
+      `${socket.id} player disconnected in room id ${socketRoomMap[socket.id]}`
+    );
+    io.to(socketRoomMap[socket.id]).emit("won_by_default");
   });
 });
 server.listen(PORT, () =>
