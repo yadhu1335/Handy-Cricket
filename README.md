@@ -1,5 +1,5 @@
-This is a Hand cricket game that you can play aganist the computer.
-
+<h3>This is a Hand cricket game that you can play aganist the computer.</h3>h3
+<br/>
 How to Play.
 1.On opening the website the computer asks "odd or even" and gives you 2 buttons.
 2.Select any one of the button, you get the button by which you can start a Toss.
