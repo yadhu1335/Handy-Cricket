@@ -246,42 +246,6 @@ socket.on("start match", () => {
   });
 
   //code for timer
-  // let timerInterval;
-  //   let timeLeft = 25;
-  // function startTimer() {
-  //   timerInterval = setInterval(() => {
-  //     timeLeft--;
-  //     if (timeLeft < 0) {
-  //       clearInterval(timerInterval); // Stop the timer when time runs out
-  //       timerRunsOut(); // Call function when timer runs out
-  //     } else {
-  //       updateTimerDisplay(); // Update the timer display
-  //     }
-  //   }, 1000); // Update timer every second (1000 milliseconds)
-  // }
-
-  // function stopTimer() {
-  //   clearInterval(timerInterval); // Stop the timer
-  // }
-
-  // function updateTimerDisplay() {
-  //   // Display the remaining time wherever you want
-  //   let timerElement = document.getElementById("timer");
-
-  //   // Format the time left (for example, as minutes and seconds)
-  //   let minutes = Math.floor(timeLeft / 60);
-  //   let seconds = timeLeft % 60;
-  //   let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
-  //   // Update the content of the element with the formatted time
-  //   timerElement.textContent = `Time left: ${formattedTime}`;
-  // }
-
-  // function timerRunsOut() {
-  //   console.log("Timer has run out!");
-  //   // Add your logic to execute when the timer runs out
-  //   socket.emit("Time out", room_id);
-  // }
   let timerInterval;
   let timeLeft = 25; // Initial time in seconds
 
