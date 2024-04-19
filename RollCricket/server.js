@@ -42,10 +42,11 @@ io.on("connection", (socket) => {
     }; // Initialize room with empty users array and user count 0
   });
 
-  //For sending the rooms(array) to "index" file
+  //For sending the rooms(array) to "index" file.
+  //the better way is to check if room id exist in Rooms[room_id] and send them true or false
   socket.on("roomlist", () => {
     console.log(`Sending back the list of rooms`);
-    socket.emit("roomlist", rooms);
+    io.emit("roomlist", rooms);
   });
 
   //when a user joins a room
@@ -246,11 +247,33 @@ io.on("connection", (socket) => {
     io.to(leastSocketId).emit("final result", leastScore, "lose", largestScore);
   }
 
+  socket.on("Time out", (room_id) => {
+    console.log(`Warning +1 for ${socket.id}`);
+    let warning = Rooms[room_id].game[socket.id].warning;
+    // Rooms[room_id].game[socket.id].warning += 1;
+    warning += 1;
+    io.to(socket.id).emit(
+      "alert",
+      `Warning issued for ${Rooms[room_id].users[socket.id]}`
+    );
+    Rooms[room_id].bat = 0;
+    Rooms[room_id].bowl = 0;
+    if (warning >= 3) {
+      console.log(`Warning exceeded for ${socket.id}`);
+      socket
+        .to(room_id)
+        .emit("won_by_default", "Warning exceeded for opponent you win");
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(
       `${socket.id} player disconnected in room id ${socketRoomMap[socket.id]}`
     );
-    io.to(socketRoomMap[socket.id]).emit("won_by_default");
+    io.to(socketRoomMap[socket.id]).emit(
+      "won_by_default",
+      "Player Disconnected. You win by Default"
+    );
   });
 });
 server.listen(PORT, () =>

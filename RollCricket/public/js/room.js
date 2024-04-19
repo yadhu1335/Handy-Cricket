@@ -8,7 +8,7 @@ socket.on("socketid", (mySocketID) => {
   mySocketID = mySocketID;
   console.log(`my socket id is ${mySocketID}`);
 });
-let prevScore = 0;
+let prevScore = 1;
 // Get the URL search parameters
 const params = new URLSearchParams(window.location.search);
 // Get the value of roomid from the URL
@@ -24,6 +24,11 @@ socket.on("alert", (message) => {
   alert(message);
   //   if (message === "Room is full")
   //   location.href = "../views/index.js";
+  if (message.includes("warning")) {
+    disable_enable_Buttons("enable");
+
+    //IMP!!! write code to update the value of button in html too
+  }
 });
 // let buttonID;
 socket.on("start match", () => {
@@ -130,6 +135,8 @@ socket.on("start match", () => {
     you_are_currently = value; //value will be either bat or bowl.
     createTag("h4", `You got to ${value}`, Game_area, "you_are_currently");
     document.getElementById("choose_value").style.display = "block";
+
+    startTimer(); //starting the timer
   });
 
   document
@@ -146,6 +153,8 @@ socket.on("start match", () => {
         );
       }
       disable_enable_Buttons("disable");
+
+      stopTimer(); //after user presses a button the timer stops.
     });
 
   function disable_enable_Buttons(enable_or_disable) {
@@ -188,16 +197,21 @@ socket.on("start match", () => {
     disable_enable_Buttons("enable");
     //code for enabling value buttons(1 to 6)
     you_are_currently = value;
+    resetTimer();
+    startTimer();
   });
 
   socket.on("score", (score) => {
     document.getElementById("score").innerText = `score=${score}`;
     prevScore = score;
     disable_enable_Buttons("enable");
+    resetTimer(); //reset timer
+    startTimer(); //Starting timer
   });
 
   let final_resut_div = document.getElementById("final result");
   socket.on("final result", (score, win_or_loose, largestScore) => {
+    stopTimer(); //when final result gets emitted timer stops
     disable_enable_Buttons("disable");
     if (win_or_loose === "win") {
       createTag("h3", "Congrats!! You win the game", final_resut_div);
@@ -220,13 +234,95 @@ socket.on("start match", () => {
     });
   });
 
-  socket.on("won_by_default", () => {
+  socket.on("won_by_default", (value) => {
+    stopTimer(); //when final result gets emitted timer stops
     console.log(`Win by default`);
-    createTag("h3", "Player Disconnected. You win by Default", final_resut_div);
+    createTag("h3", value, final_resut_div);
     createTag("button", "Go Back", final_resut_div, "go_back_btn");
     document.getElementById("go_back_btn").addEventListener("click", () => {
       location.href = `../views/index.html`;
     });
     disable_enable_Buttons("disable");
   });
+
+  //code for timer
+  // let timerInterval;
+  //   let timeLeft = 25;
+  // function startTimer() {
+  //   timerInterval = setInterval(() => {
+  //     timeLeft--;
+  //     if (timeLeft < 0) {
+  //       clearInterval(timerInterval); // Stop the timer when time runs out
+  //       timerRunsOut(); // Call function when timer runs out
+  //     } else {
+  //       updateTimerDisplay(); // Update the timer display
+  //     }
+  //   }, 1000); // Update timer every second (1000 milliseconds)
+  // }
+
+  // function stopTimer() {
+  //   clearInterval(timerInterval); // Stop the timer
+  // }
+
+  // function updateTimerDisplay() {
+  //   // Display the remaining time wherever you want
+  //   let timerElement = document.getElementById("timer");
+
+  //   // Format the time left (for example, as minutes and seconds)
+  //   let minutes = Math.floor(timeLeft / 60);
+  //   let seconds = timeLeft % 60;
+  //   let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+  //   // Update the content of the element with the formatted time
+  //   timerElement.textContent = `Time left: ${formattedTime}`;
+  // }
+
+  // function timerRunsOut() {
+  //   console.log("Timer has run out!");
+  //   // Add your logic to execute when the timer runs out
+  //   socket.emit("Time out", room_id);
+  // }
+  let timerInterval;
+  let timeLeft = 25; // Initial time in seconds
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft < 0) {
+        clearInterval(timerInterval); // Stop the timer when time runs out
+        timerRunsOut(); // Call function when timer runs out
+      } else {
+        updateTimerDisplay(); // Update the timer display
+      }
+    }, 1000); // Update timer every second (1000 milliseconds)
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval); // Stop the timer
+  }
+
+  function resetTimer() {
+    stopTimer(); // Stop the timer if it's running
+    timeLeft = 25; // Reset the time
+    updateTimerDisplay(); // Update the display with the reset time
+  }
+
+  function updateTimerDisplay() {
+    // Display the remaining time wherever you want
+    let timerElement = document.getElementById("timer");
+
+    // Format the time left (for example, as minutes and seconds)
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+    let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+    // Update the content of the element with the formatted time
+    timerElement.textContent = `Time left: ${formattedTime}`;
+  }
+
+  function timerRunsOut() {
+    console.log("Timer has run out!");
+    // Add your logic to execute when the timer runs out
+    socket.emit("Time out", room_id);
+  }
 });
