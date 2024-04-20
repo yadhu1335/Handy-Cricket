@@ -40,31 +40,19 @@ socket.on("start match", () => {
   let heads_or_tails_btn; //My choice in heads or tails
   const heads = document.getElementById("heads");
   const tails = document.getElementById("tails");
-  heads.addEventListener("click", function () {
-    heads_or_tails_btn = "heads";
-    print_your_choice(heads_or_tails_btn);
-    console.log(`${username} chose Heads`);
-    heads.disabled = true;
-    tails.disabled = true;
-    socket.emit("my_heads_or_tails_choice", "heads", room_id);
-    document.createElement("p").textContent = "u chose heads";
-  });
 
-  tails.addEventListener("click", function () {
-    heads_or_tails_btn = "tails";
-    print_your_choice(heads_or_tails_btn);
-    console.log(`${username} chose Tails`);
-    heads.disabled = true;
-    tails.disabled = true;
-    socket.emit("my_heads_or_tails_choice", "tails", room_id);
-    document.createElement("p").textContent = "u chose tails";
-  });
+  const heads_or_tails = document.getElementById("heads_or_tails"); //div where we have the button heads and tails
 
-  function print_your_choice(heads_or_tails_btn) {
-    const your_choice_pTag = document.createElement("p");
-    your_choice_pTag.textContent = `You chose ${heads_or_tails_btn}`;
-    toss_choice_parentDiv.appendChild(your_choice_pTag);
-  }
+  heads_or_tails.addEventListener("click", (event) => {
+    if (event.target.tagName === "BUTTON") {
+      heads_or_tails_btn = event.target.id; //id will be either heads or tails
+      createTag("p", `You chose ${heads_or_tails_btn}`, toss_choice_parentDiv); //appending choice to html
+      console.log(`${username} chose Heads`);
+      heads.disabled = true;
+      tails.disabled = true;
+      socket.emit("my_heads_or_tails_choice", event.target.id, room_id);
+    }
+  });
 
   socket.on("opponents_heads_or_tails_choice", (heads_or_tails) => {
     let opposition_choice_in_toss = heads_or_tails;
@@ -211,6 +199,7 @@ socket.on("start match", () => {
   let final_resut_div = document.getElementById("final result");
   socket.on("final result", (score, win_or_loose, largestScore) => {
     match_ended = true;
+    console.log(`match ended= ${match_ended}`);
     stopTimer(); //when final result gets emitted timer stops
     disable_enable_Buttons("disable");
     if (win_or_loose === "win") {
@@ -235,7 +224,7 @@ socket.on("start match", () => {
   });
 
   socket.on("won_by_default", (value) => {
-    if (match_ended != false) {
+    if (match_ended === false) {
       //if match hasnt ended, only then u can win by default
       stopTimer(); //when final result gets emitted timer stops
       console.log(`Win by default`);
@@ -277,7 +266,6 @@ socket.on("start match", () => {
   function updateTimerDisplay() {
     // Display the remaining time wherever you want
     let timerElement = document.getElementById("timer");
-
     // Format the time left (for example, as minutes and seconds)
     let minutes = Math.floor(timeLeft / 60);
     let seconds = timeLeft % 60;

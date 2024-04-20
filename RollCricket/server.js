@@ -72,18 +72,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("addroom", (room_id) => {
-    // console.log(`added room ${room_id} to the array`);
-    // rooms.push(room_id); //adding the room to the array
-    // Rooms[room_id] = {
-    //   users: {},
-    //   userCount: 0,
-    //   toss: {},
-    //   game: {},
-    //   switch_side: false,
-    //   bat: 0,
-    //   bowl: 0, //bat and bowl is used to store the bat and bowl value
-    //   score_to_beat: 0,
-    // }; // Initialize room with empty users array and user count 0
     add_room_id(room_id);
   });
 
@@ -223,7 +211,7 @@ io.on("connection", (socket) => {
               ) {
                 console.log(`${Rooms[room_id].game[socketid].score} >
                 ${Rooms[room_id].score_to_beat}`);
-                repeat(Rooms, room_id);
+                finding_largest_sockedid_and_score(Rooms, room_id);
               }
             }
           }
@@ -234,7 +222,7 @@ io.on("connection", (socket) => {
           // //both had their turn in batting
           // // Initialize variables to store the largest and least scores and their associated socket IDs
 
-          repeat(Rooms, room_id);
+          finding_largest_sockedid_and_score(Rooms, room_id);
         } else {
           //One of the person in game didnt have chnce to bat.
           for (const [socketid, value] of Object.entries(
@@ -267,7 +255,7 @@ io.on("connection", (socket) => {
   });
 
   //didnt think of another name
-  function repeat(Rooms, room_id) {
+  function finding_largest_sockedid_and_score(Rooms, room_id) {
     let largestScore = -Infinity;
     let leastScore = Infinity;
     let largestSocketId;
