@@ -60,3 +60,11 @@ randbtn.addEventListener("click", () => {
     location.href = `../views/room.html?room=${room_id}&username=${username}`;
   });
 });
+
+let show_rules = false; //to toggle block and none for the below event
+document.getElementById("how_to_play_btn").addEventListener("click", () => {
+  show_rules = !show_rules;
+  if (show_rules)
+    document.getElementById("how_to_play").style.display = "block";
+  else document.getElementById("how_to_play").style.display = "none";
+});
