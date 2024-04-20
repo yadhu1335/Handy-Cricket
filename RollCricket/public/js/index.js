@@ -52,3 +52,11 @@ createbtn.addEventListener("click", function () {
   Socket.emit("addroom", room_id);
   location.href = `../views/room.html?room=${room_id}&username=${username}`;
 });
+
+randbtn.addEventListener("click", () => {
+  console.log(`Searching for rooms`);
+  Socket.emit("random_lobby");
+  Socket.on("assign_room_id", (room_id) => {
+    location.href = `../views/room.html?room=${room_id}&username=${username}`;
+  });
+});

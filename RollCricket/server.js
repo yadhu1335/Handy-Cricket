@@ -12,6 +12,7 @@ const io = socketio(server);
 let rooms = []; //array containing the room id
 let Rooms = {}; //obj mapping roomid with username and usercount
 let socketRoomMap = {}; //saving room id along with socket id
+let randroom = []; //for random lobby joining
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -19,27 +20,71 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "views", "index.html"));
 });
 
+function add_room_id(room_id) {
+  //i am using the same lines 2 times so i created this function. One for friend lobby and another for random lobby.
+  /*my_yapping()
+  {
+    when the user clicks on "create room" button in index.js a roomid is created and passed. Then the roomid is added into an array called rooms and an object called Rooms.
+    why 2 rooom? ans= the array rooms is used for checking wheater the room exists and it will be complicated to call the obj recuurently for suh a trivial task.
+    Rooms is mostly used for the server side. room(array) is passed to index.html so that when a user tries to join a room it can check wheater the room exists or not.
+  }*/
+  console.log(`added room ${room_id} to the array`);
+  rooms.push(room_id); //adding the room to the array
+  Rooms[room_id] = {
+    users: {},
+    userCount: 0,
+    toss: {},
+    game: {},
+    switch_side: false,
+    bat: 0,
+    bowl: 0, //bat and bowl is used to store the bat and bowl value
+    score_to_beat: 0,
+  }; // Initialize room with empty users array and user count 0
+}
+
+function uuidv4() {
+  return "xxyxyxxyx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 //A user connects
 io.on("connection", (socket) => {
   console.log("A user connected");
 
   io.to(socket.id).emit("socketid", socket.id); //sending socketid value to the front end js
 
-  // when the user clicks on "create room" button in index.js a roomid is created and passed. Then the roomid is added into an array called rooms and an object called Rooms.
-  // why 2 rooom? ans= the array rooms is used for checking wheater the room exists and it will be complicated to call the obj recuurently for suh a trivial task. Rooms is mostly used for the server side. room(array) is passed to index.html so that when a user tries to join a room it can check wheater the room exists or not.
+  socket.on("random_lobby", () => {
+    randroom.push(socket.id);
+    console.log(`${socket.id} has been added to the array randomroom`);
+    if (randroom.length >= 2) {
+      room_id = uuidv4(); //generates a roomid
+      add_room_id(room_id); //adding and initializing newly created room_id
+      for (let i = 0; i < 2; i++) {
+        io.to(randroom[i]).emit("assign_room_id", room_id);
+      }
+      randroom.shift();
+      randroom.shift();
+      //removing the first 2 element from the array
+    }
+  });
+
   socket.on("addroom", (room_id) => {
-    console.log(`added room ${room_id} to the array`);
-    rooms.push(room_id); //adding the room to the array
-    Rooms[room_id] = {
-      users: {},
-      userCount: 0,
-      toss: {},
-      game: {},
-      switch_side: false,
-      bat: 0,
-      bowl: 0, //bat and bowl is used to store the bat and bowl value
-      score_to_beat: 0,
-    }; // Initialize room with empty users array and user count 0
+    // console.log(`added room ${room_id} to the array`);
+    // rooms.push(room_id); //adding the room to the array
+    // Rooms[room_id] = {
+    //   users: {},
+    //   userCount: 0,
+    //   toss: {},
+    //   game: {},
+    //   switch_side: false,
+    //   bat: 0,
+    //   bowl: 0, //bat and bowl is used to store the bat and bowl value
+    //   score_to_beat: 0,
+    // }; // Initialize room with empty users array and user count 0
+    add_room_id(room_id);
   });
 
   //For sending the rooms(array) to "index" file.

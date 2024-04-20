@@ -1,23 +1,22 @@
 const socket = io();
-let your_choice_in_toss; // this is renamed to "heads_or_tails_button"
-// let opposition_choice_in_toss;
-let mySocketID;
-let you_are_currently;
+let mySocketID; //For saving my socketid
+let you_are_currently; //To know what i am doing Batting or bowling.
+let match_ended = false; //For knowing if the atch has ended or not. This is used to prevent "win_by_default" socket from executing
 // Getting my socketId from front end
 socket.on("socketid", (mySocketID) => {
   mySocketID = mySocketID;
   console.log(`my socket id is ${mySocketID}`);
 });
 let prevScore = 1;
-// Get the URL search parameters
-const params = new URLSearchParams(window.location.search);
-// Get the value of roomid from the URL
-const room_id = params.get("room");
-// Get the value of username from the URL
-const username = params.get("username");
+
+const params = new URLSearchParams(window.location.search); // Get the URL search parameters
+
+const room_id = params.get("room"); // Get the value of roomid from the URL
+
+const username = params.get("username"); // Get the value of username from the URL
 console.log(`your useranme is ${username} and room id is ${room_id}`);
 
-socket.emit("joinroom", room_id, username);
+socket.emit("joinroom", room_id, username); //when the room.js website is loaded up it automatically emits "join room".
 
 // should improve this
 socket.on("alert", (message) => {
@@ -32,7 +31,7 @@ socket.on("alert", (message) => {
 });
 // let buttonID;
 socket.on("start match", () => {
-  //   document.getElementById("players").innerText=`${} vs ${}`
+  //  IMP!!! document.getElementById("players").innerText=`${} vs ${}`
   console.log("server gave signal to start the match");
   document.getElementById("match").style.display = "block";
   document.getElementById("insufficient_players").style.display = "none";
@@ -211,6 +210,7 @@ socket.on("start match", () => {
 
   let final_resut_div = document.getElementById("final result");
   socket.on("final result", (score, win_or_loose, largestScore) => {
+    match_ended = true;
     stopTimer(); //when final result gets emitted timer stops
     disable_enable_Buttons("disable");
     if (win_or_loose === "win") {
@@ -235,14 +235,17 @@ socket.on("start match", () => {
   });
 
   socket.on("won_by_default", (value) => {
-    stopTimer(); //when final result gets emitted timer stops
-    console.log(`Win by default`);
-    createTag("h3", value, final_resut_div);
-    createTag("button", "Go Back", final_resut_div, "go_back_btn");
-    document.getElementById("go_back_btn").addEventListener("click", () => {
-      location.href = `../views/index.html`;
-    });
-    disable_enable_Buttons("disable");
+    if (match_ended != false) {
+      //if match hasnt ended, only then u can win by default
+      stopTimer(); //when final result gets emitted timer stops
+      console.log(`Win by default`);
+      createTag("h3", value, final_resut_div);
+      createTag("button", "Go Back", final_resut_div, "go_back_btn");
+      document.getElementById("go_back_btn").addEventListener("click", () => {
+        location.href = `../views/index.html`;
+      });
+      disable_enable_Buttons("disable");
+    }
   });
 
   //code for timer
