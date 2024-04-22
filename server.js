@@ -85,6 +85,7 @@ io.on("connection", (socket) => {
   socket.on("joinroom", (room_id, username) => {
     if (!Rooms[room_id]) {
       console.log(`Room ${room_id} does not exist`);
+      io.to(socket.id).emit("alert", "Error encountered in room...Go back");
       return;
     } //checking if the room exists in the Rooms object
 
