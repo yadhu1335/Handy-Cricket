@@ -5,7 +5,11 @@ img{
     justify-content: center;
 }
 body{
-    background-color: blanchedalmond;
+    
+        background-image: url('../image/bg.jpg'); /* Specify the path to your image */
+        background-size: cover; /* Cover the entire background */
+        background-repeat: no-repeat; /* Do not repeat the background image */
+    
 }
 
 button {
