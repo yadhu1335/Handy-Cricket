@@ -190,7 +190,14 @@ io.on("connection", (socket) => {
       console.log(`Value of bowl in obj is ${Rooms[room_id].bowl}`);
     }
     if (Rooms[room_id].bat != 0 && Rooms[room_id].bowl != 0) {
-      //Recieved value for both bat and bowl so we can start calc
+      //Recieved value for both bat and bowl so we can start calc and emit the choice os the users
+
+      io.to(room_id).emit(
+        "button value of players",
+        Rooms[room_id].bat,
+        Rooms[room_id].bowl
+      );
+
       console.log(`Got both bat and bowl values`);
       if (Rooms[room_id].bat != Rooms[room_id].bowl) {
         console.log(`Upading scorre since bat and bowl are not same`);

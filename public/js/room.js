@@ -1,6 +1,6 @@
 const socket = io();
 let mySocketID; //For saving my socketid
-let you_are_currently; //To know what i am doing Batting or bowling.
+let you_are_currently; //To know what i am doing Batting or bowling. The will be either bat or bowl.
 let match_ended = false; //For knowing if the atch has ended or not. This is used to prevent "win_by_default" socket from executing
 // Getting my socketId from front end
 socket.on("socketid", (mySocketID) => {
@@ -144,7 +144,7 @@ socket.on("start match", () => {
     you_are_currently = value; //value will be either bat or bowl.
     createTag("h4", `You got to ${value}`, Game_area, "you_are_currently");
     document.getElementById("choose_value").style.display = "block";
-
+    document.getElementById("button_value_of_users").style.display = "block";
     startTimer(); //starting the timer
   });
 
@@ -153,6 +153,9 @@ socket.on("start match", () => {
     .addEventListener("click", function (event) {
       if (event.target.tagName === "BUTTON") {
         const targetId = event.target.id;
+        document.getElementById("your_selection").innerText = targetId;
+        document.getElementById("opponents_selection").innerText = 0;
+
         console.log(`${targetId} has been pressed`);
         socket.emit(
           "choose value",
@@ -182,6 +185,18 @@ socket.on("start match", () => {
       }
     }
   }
+
+  //This is used to show the users their chosen value along with the opponent value
+  socket.on("button value of players", (bat, bowl) => {
+    console.log(`!!!!Adding values to html!!!! `);
+    if (you_are_currently === "bat") {
+      console.log(`Opponents choice=${bowl}`);
+      document.getElementById("opponents_selection").innerText = bowl;
+    } else {
+      console.log(`Opponents choice=${bat}`);
+      document.getElementById("opponents_selection").innerText = bat;
+    }
+  });
 
   socket.on("update you_are_currently", (value) => {
     document.getElementById("score").innerText = `score=${0}`;
@@ -255,7 +270,7 @@ socket.on("start match", () => {
       createTag("h3", value, final_resut_div);
       createTag("button", "Go Back", final_resut_div, "go_back_btn");
       document.getElementById("go_back_btn").addEventListener("click", () => {
-        location.href = `../views/index.html`;
+        location.href = `../`;
       });
       disable_enable_Buttons("disable");
     }
