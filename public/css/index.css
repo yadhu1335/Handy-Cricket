@@ -1,0 +1,9 @@
+img{
+    display: flex;
+    width:800px;
+    height:auto;
+    justify-content: center;
+}
+body{
+    background-color: blanchedalmond;
+}
