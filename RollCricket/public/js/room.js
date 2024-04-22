@@ -11,7 +11,9 @@ let prevScore = 1;
 
 const params = new URLSearchParams(window.location.search); // Get the URL search parameters
 
-const room_id = params.get("room"); // Get the value of roomid from the URL
+// Get the value of roomid from the URL
+const room_id = params.get("room");
+document.getElementById("roomcode").innerText = room_id; //show the value in p tag
 
 const username = params.get("username"); // Get the value of username from the URL
 console.log(`your useranme is ${username} and room id is ${room_id}`);
@@ -29,7 +31,27 @@ socket.on("alert", (message) => {
     //IMP!!! write code to update the value of button in html too
   }
 });
-// let buttonID;
+
+socket.on("players info", (value) => {
+  users = [];
+  for (let [sockeid, username] of Object.entries(value)) {
+    users.push(username);
+  }
+  console.log(`Users=[${users}]`);
+  document.getElementById("players").innerText = `${users[0]} vs ${users[1]}`; //showing you username vs opponent username
+});
+
+document.getElementById("roomcode_btn").addEventListener("click", () => {
+  navigator.clipboard
+    .writeText(room_id)
+    .then(() => {
+      console.log("Room ID copied to clipboard: " + room_id);
+    })
+    .catch((error) => {
+      console.error("Error copying to clipboard:", error);
+    });
+});
+
 socket.on("start match", () => {
   //  IMP!!! document.getElementById("players").innerText=`${} vs ${}`
   console.log("server gave signal to start the match");
@@ -211,7 +233,9 @@ socket.on("start match", () => {
       createTag("h3", "Sorry!! You loose the game", final_resut_div);
       createTag(
         "h3",
-        `Your score=${score} , u lost by ${score - largestScore}`,
+        `Your score=${score} , u lost by ${Math.abs(
+          score - largestScore
+        )} runs`,
         final_resut_div
       );
       console.log(`you loose`);

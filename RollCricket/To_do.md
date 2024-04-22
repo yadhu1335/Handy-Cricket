@@ -6,3 +6,7 @@
 6.Add random lobby. logic=first check if there is any room available in a brand new obj called random. If it exists then add the user into that and move it into Room[] obj -[X]
 7.Add voice chat(webrtc)-[]
 8.Delete old files from multiplayer branch.-[]
+9.Change 1 to 0 in score(server.js)-[X]
+10.getting minus value in score(last part), change it-[X]
+11.Add opponent name in the room-[X]
+12.Add Values chosen by users to be hown in the room-[X]

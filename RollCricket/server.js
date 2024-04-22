@@ -3,7 +3,7 @@ const express = require("express");
 const http = require("http");
 const moment = require("moment"); //for time
 const socketio = require("socket.io");
-const e = require("express");
+// const e = require("express");
 const PORT = process.env.PORT || 5050;
 const app = express();
 const server = http.createServer(app);
@@ -102,13 +102,14 @@ io.on("connection", (socket) => {
       Rooms[room_id].users[socket.id] = username;
       console.log(`${username} joined in ${room_id}`);
       console.log(`users in ${room_id} are ${JSON.stringify(Rooms[room_id])}`);
-      Rooms[room_id].game[socket.id] = { score: 1, warning: 0 };
+      Rooms[room_id].game[socket.id] = { score: 0, warning: 0 };
       socketRoomMap[socket.id] = room_id;
     }
     //when the number of users hit 2 the game starts this if condition is used for that purpose.
     if (Rooms[room_id].userCount === 2) {
       io.to(room_id).emit("start match"); //changed from socket to io bcoz it will not emit to the 2nd user who
       console.log("Number of users is 2 so everyone can start playing");
+      io.to(room_id).emit("players info", Rooms[room_id].users);
     }
   });
 
