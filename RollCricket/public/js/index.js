@@ -2,6 +2,8 @@ const submitbtn = document.getElementById("submitbtn");
 const joinbtn = document.getElementById("joinbtn");
 const createbtn = document.getElementById("createbtn");
 const randbtn = document.getElementById("randbtn");
+const botbtn = document.getElementById("botbtn");
+
 let room_id;
 let username;
 
@@ -60,6 +62,11 @@ randbtn.addEventListener("click", () => {
     location.href = `../views/room.html?room=${room_id}&username=${username}`;
   });
 });
+
+botbtn.addEventListener("click",function (){
+  location.href = `../views/bot.html`;
+
+} );
 
 let show_rules = false; //to toggle block and none for the below event
 document.getElementById("how_to_play_btn").addEventListener("click", () => {
