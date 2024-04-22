@@ -7,3 +7,40 @@ img{
 body{
     background-color: blanchedalmond;
 }
+
+button {
+
+    background: linear-gradient(100deg, #ffc400 0, hsl(59, 94%, 57%) 75%, #feffb1 100%);
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px;
+    border: black solid 1px;
+}
+
+input{
+    width: 200px;
+    height: 30px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 25px;
+    resize: none;
+    border: black solid 1px;
+}
+h3{
+    font-family: "algerian", Times, serif;
+  font-weight: bold; /* Specify font weight */
+  font-size: 50px; /* Specify font size */
+  color: rgb(255, 136, 0);
+  font-style: italic;
+  text-shadow: -2px -2px 0 BLACK,-2px -1px 0 BLACK,-2px 0px 0 BLACK,-2px 1px 0 BLACK,-2px 2px 0 BLACK,-1px -2px 0 BLACK,-1px -1px 0 BLACK,-1px 0px 0 BLACK,-1px 1px 0 BLACK,-1px 2px 0 BLACK,0px -2px 0 BLACK,0px -1px 0 BLACK,0px 0px 0 BLACK,0px 1px 0 BLACK,0px 2px 0 BLACK,1px -2px 0 BLACK,1px -1px 0 BLACK,1px 0px 0 BLACK,1px 1px 0 BLACK,1px 2px 0 BLACK,2px -2px 0 BLACK,2px -1px 0 BLACK,2px 0px 0 BLACK,2px 1px 0 BLACK,2px 2px 0 BLACK
+
+  
+    
+}
