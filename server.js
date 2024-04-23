@@ -110,6 +110,8 @@ io.on("connection", (socket) => {
       io.to(room_id).emit("start match"); //changed from socket to io bcoz it will not emit to the 2nd user who
       console.log("Number of users is 2 so everyone can start playing");
       io.to(room_id).emit("players info", Rooms[room_id].users);
+
+      io.to(room_id).emit("start call"); //to start the webrtc procedure for audio transfering
     }
   });
 
@@ -305,6 +307,22 @@ io.on("connection", (socket) => {
         .to(room_id)
         .emit("won_by_default", "Warning exceeded for opponent you win");
     }
+  });
+
+  //webrtc
+  socket.on("offer", (offer, room_id) => {
+    // Relay offer to the other user in the room
+    socket.to(room_id).emit("offer", offer);
+  });
+
+  socket.on("answer", (answer, room_id) => {
+    // Relay answer to the other user in the room
+    socket.to(room_id).emit("answer", answer);
+  });
+
+  socket.on("ice candidate", (candidate, room_id) => {
+    // Relay ICE candidate to the other user in the room
+    socket.to(room_id).emit("ice candidate", candidate);
   });
 
   socket.on("disconnect", () => {

@@ -276,6 +276,108 @@ socket.on("start match", () => {
     }
   });
 
+  //webrtc
+
+  // Create RTCPeerConnection object
+  const peerConnection = new RTCPeerConnection({
+    iceServers: [
+      { urls: "stun:stun.l.google.com:19302" }, // Specify STUN server
+      {
+        urls: "turn:global.relay.metered.ca:443",
+        username: "bc23f73045981b328f3cfcf6",
+        credential: "pKmB1mz2nJDIRSth",
+      }, // Specify TURN server with authentication
+    ],
+  });
+
+  socket.on("start call", () => {
+    // Initiate WebRTC process here
+    console.log(`starting starWebRTC()`);
+    startWebRTC();
+  });
+
+  function startWebRTC() {
+    console.log(`function started and getting audio`);
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(function (stream) {
+        // Add user's audio stream to peer connection
+        stream
+          .getTracks()
+          .forEach((track) => peerConnection.addTrack(track, stream));
+
+        peerConnection.onicecandidate = handleICECandidateEvent;
+        // Add this event listener for handling remote audio stream
+        peerConnection
+          .createOffer()
+          .then((offer) => peerConnection.setLocalDescription(offer))
+          .then(() => {
+            // Send offer to the other user via signaling server
+            socket.emit("offer", peerConnection.localDescription, room_id);
+          });
+      })
+      .catch(function (err) {
+        console.error("Error accessing user media: ", err);
+      });
+  }
+  peerConnection.ontrack = handleRemoteStreamAdded; // Add event listeners for ICE candidates and create offer/answer
+
+  function handleICECandidateEvent(event) {
+    console.log(`Handling icecandidate`);
+    if (event.candidate) {
+      // Send ICE candidate to the other user via signaling server
+      socket.emit("ice candidate", event.candidate, room_id);
+    }
+  }
+
+  socket.on("offer", async (offer) => {
+    try {
+      console.log(`offer recieved`);
+      // Set remote description
+      await peerConnection.setRemoteDescription(offer);
+
+      // Create answer
+      const answer = await peerConnection.createAnswer();
+
+      // Set local description
+      await peerConnection.setLocalDescription(answer);
+
+      // Send answer to the other user via signaling server
+      socket.emit("answer", answer, room_id);
+    } catch (error) {
+      console.error("Error handling offer:", error);
+    }
+  });
+
+  socket.on("answer", async (answer) => {
+    try {
+      console.log(`answer recieved`);
+      // Set remote description
+      await peerConnection.setRemoteDescription(answer);
+    } catch (error) {
+      console.error("Error handling answer:", error);
+    }
+  });
+
+  socket.on("ice candidate", (candidate) => {
+    try {
+      console.log(`icecandidate recieved`);
+      // Add ICE candidate to peer connection
+      peerConnection.addIceCandidate(candidate);
+    } catch (error) {
+      console.error("Error handling ICE candidate:", error);
+    }
+  });
+
+  // Function to handle remote audio stream
+  function handleRemoteStreamAdded(event) {
+    console.log(`Addign remote stram to audio element`);
+    const remoteAudioElement = document.getElementById("audio");
+    if (!remoteAudioElement.srcObject) {
+      remoteAudioElement.srcObject = event.streams[0];
+    }
+  }
+
   //code for timer
   let timerInterval;
   let timeLeft = 25; // Initial time in seconds
