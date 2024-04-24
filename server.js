@@ -68,6 +68,14 @@ io.on("connection", (socket) => {
       randroom.shift();
       //removing the first 2 element from the array
     }
+    socket.on("disconnect", () => {
+      const index = randroom.findIndex((element) => element === socket.id);
+      console.log(`Element found in ${index}`);
+      if (index > -1) {
+        randroom.splice(index, 1); // Remove the element at the found index
+        console.log(`Removing the element`);
+      }
+    });
   });
 
   socket.on("addroom", (room_id) => {

@@ -23,8 +23,6 @@ socket.emit("joinroom", room_id, username); //when the room.js website is loaded
 // should improve this
 socket.on("alert", (message, warning) => {
   alert(message);
-  //   if (message === "Room is full")
-  //   location.href = "../views/index.js";
   if (warning) {
     console.log(`Warning recieved `);
     disable_enable_Buttons("enable");
@@ -34,8 +32,6 @@ socket.on("alert", (message, warning) => {
 
     document.getElementById("your_selection").innerText = 0;
     document.getElementById("opponents_selection").innerText = 0;
-
-    //IMP!!! write code to update the value of button in html too
   }
 });
 
@@ -306,13 +302,14 @@ socket.on("start match", () => {
   const peerConnection = new RTCPeerConnection({
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" }, // Specify STUN server
-      {
-        urls: "turn:global.relay.metered.ca:443",
-        username: "bc23f73045981b328f3cfcf6",
-        credential: "pKmB1mz2nJDIRSth",
-      }, // Specify TURN server with authentication
+      // {
+      //   urls: "turn:global.relay.metered.ca:443",
+      //   username: "bc23f73045981b328f3cfcf6",
+      //   credential: "pKmB1mz2nJDIRSth",
+      // }, // Specify TURN server with authentication
     ],
   });
+  //un comment turn after finishing final year projetc
 
   let localStream; //for saving the local stream ie yours
 

@@ -3,7 +3,6 @@ const joinbtn = document.getElementById("joinbtn");
 const createbtn = document.getElementById("createbtn");
 const randbtn = document.getElementById("randbtn");
 const botbtn = document.getElementById("botbtn");
-
 let room_id;
 let username;
 
@@ -56,17 +55,40 @@ createbtn.addEventListener("click", function () {
 });
 
 randbtn.addEventListener("click", () => {
+  randbtn.disabled = true;
   console.log(`Searching for rooms`);
   Socket.emit("random_lobby");
+  // document
+  //   .getElementById("searching_div")
+  //   .appendChild((document.createElement("p").textContent = "Searching..."));
+  const pElement = document.createElement("p");
+  pElement.textContent = "Searching...";
+  document.getElementById("searching_div").appendChild(pElement);
+
+  function updateEllipsis() {
+    const currentText = pElement.textContent;
+    pElement.textContent = currentText.endsWith("...")
+      ? "Searching"
+      : currentText + ".";
+  }
+
+  // Start updating ellipsis dynamically
+  const ellipsisInterval = setInterval(updateEllipsis, 500);
+
+  // Stop updating ellipsis when the room is assigned
+  Socket.on("assign_room_id", () => {
+    clearInterval(ellipsisInterval);
+    document.getElementById("searching_div").style.display = "none";
+  });
+
   Socket.on("assign_room_id", (room_id) => {
     location.href = `../views/room.html?room=${room_id}&username=${username}`;
   });
 });
 
-botbtn.addEventListener("click",function (){
+botbtn.addEventListener("click", function () {
   location.href = `../views/bot.html`;
-
-} );
+});
 
 let show_rules = false; //to toggle block and none for the below event
 document.getElementById("how_to_play_btn").addEventListener("click", () => {
