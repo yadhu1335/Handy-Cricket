@@ -268,6 +268,14 @@ socket.on("start match", () => {
     });
   });
 
+  socket.on("draw", () => {
+    createTag("p", "The match has ended in a Draw", final_resut_div);
+    document.getElementById("go_back_btn").addEventListener("click", () => {
+      // location.href = `../views/index.html`;
+      location.href = `../`;
+    });
+  });
+
   socket.on("won_by_default", (value, socketid) => {
     if (match_ended === false) {
       console.log(`Inside won by default`);
