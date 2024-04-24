@@ -292,20 +292,24 @@ io.on("connection", (socket) => {
 
   socket.on("Time out", (room_id) => {
     console.log(`Warning +1 for ${socket.id}`);
-    let warning = Rooms[room_id].game[socket.id].warning;
+    // let warning = Rooms[room_id].game[socket.id].warning;
     // Rooms[room_id].game[socket.id].warning += 1;
-    warning += 1;
-    io.to(socket.id).emit(
+    Rooms[room_id].game[socket.id].warning += 1;
+    io.to(room_id).emit(
       "alert",
-      `Warning issued for ${Rooms[room_id].users[socket.id]}`
+      `Warning issued for ${Rooms[room_id].users[socket.id]}`,
+      true
     );
     Rooms[room_id].bat = 0;
     Rooms[room_id].bowl = 0;
-    if (warning >= 3) {
+    if (Rooms[room_id].game[socket.id].warning >= 3) {
       console.log(`Warning exceeded for ${socket.id}`);
-      socket
-        .to(room_id)
-        .emit("won_by_default", "Warning exceeded for opponent you win");
+      io.to(room_id).emit(
+        "won_by_default",
+        "Warning exceeded for opponent you win",
+        socket.id
+      );
+      //!!!IMP socket.is is to check which player lost. we are emitting socketid who lost
     }
   });
 
@@ -329,10 +333,13 @@ io.on("connection", (socket) => {
     console.log(
       `${socket.id} player disconnected in room id ${socketRoomMap[socket.id]}`
     );
-    io.to(socketRoomMap[socket.id]).emit(
-      "won_by_default",
-      "Player Disconnected. You win by Default"
-    );
+    socket
+      .to(socketRoomMap[socket.id])
+      .emit(
+        "won_by_default",
+        "Player Disconnected. You win by Default",
+        socket.id
+      );
   });
 });
 server.listen(PORT, () =>

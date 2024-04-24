@@ -9,7 +9,10 @@
   <body>
     <p id="players"></p>
 
-    <div id="audio_div"><audio id="audio" controls autoplay></audio></div>
+    <div id="audio_div">
+      <button id="audio_control">Mute</button>
+      <audio id="audio" autoplay style="display: none"></audio>
+    </div>
 
     <div id="insufficient_players">
       <h1>Insufficient number of players</h1>

@@ -3,8 +3,8 @@ let mySocketID; //For saving my socketid
 let you_are_currently; //To know what i am doing Batting or bowling. The will be either bat or bowl.
 let match_ended = false; //For knowing if the atch has ended or not. This is used to prevent "win_by_default" socket from executing
 // Getting my socketId from front end
-socket.on("socketid", (mySocketID) => {
-  mySocketID = mySocketID;
+socket.on("socketid", (socketid) => {
+  mySocketID = socketid;
   console.log(`my socket id is ${mySocketID}`);
 });
 let prevScore = 1;
@@ -21,12 +21,19 @@ console.log(`your useranme is ${username} and room id is ${room_id}`);
 socket.emit("joinroom", room_id, username); //when the room.js website is loaded up it automatically emits "join room".
 
 // should improve this
-socket.on("alert", (message) => {
+socket.on("alert", (message, warning) => {
   alert(message);
   //   if (message === "Room is full")
   //   location.href = "../views/index.js";
-  if (message.includes("warning")) {
+  if (warning) {
+    console.log(`Warning recieved `);
     disable_enable_Buttons("enable");
+    console.log(`Restarting the rimer`);
+    resetTimer();
+    startTimer();
+
+    document.getElementById("your_selection").innerText = 0;
+    document.getElementById("opponents_selection").innerText = 0;
 
     //IMP!!! write code to update the value of button in html too
   }
@@ -51,6 +58,23 @@ document.getElementById("roomcode_btn").addEventListener("click", () => {
       console.error("Error copying to clipboard:", error);
     });
 });
+
+function disable_enable_Buttons(enable_or_disable) {
+  //value for enable_or_disable is either "enable" or "disable";
+  if (enable_or_disable === "disable") {
+    console.log(`disabling buttons`);
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(i + "").disabled = true;
+    }
+  }
+
+  if (enable_or_disable === "enable") {
+    console.log(`enabling buttons`);
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(i + "").disabled = false;
+    }
+  }
+}
 
 socket.on("start match", () => {
   //  IMP!!! document.getElementById("players").innerText=`${} vs ${}`
@@ -169,22 +193,7 @@ socket.on("start match", () => {
       stopTimer(); //after user presses a button the timer stops.
     });
 
-  function disable_enable_Buttons(enable_or_disable) {
-    //value for enable_or_disable is either "enable" or "disable";
-    if (enable_or_disable === "disable") {
-      console.log(`disabling buttons`);
-      for (let i = 1; i <= 6; i++) {
-        document.getElementById(i + "").disabled = true;
-      }
-    }
-
-    if (enable_or_disable === "enable") {
-      console.log(`enabling buttons`);
-      for (let i = 1; i <= 6; i++) {
-        document.getElementById(i + "").disabled = false;
-      }
-    }
-  }
+  //disable_enable_button was here
 
   //This is used to show the users their chosen value along with the opponent value
   socket.on("button value of players", (bat, bowl) => {
@@ -262,17 +271,32 @@ socket.on("start match", () => {
     });
   });
 
-  socket.on("won_by_default", (value) => {
+  socket.on("won_by_default", (value, socketid) => {
     if (match_ended === false) {
+      console.log(`Inside won by default`);
+      console.log(
+        `socketid of looser ${socketid}, my socet id is ${mySocketID}`
+      );
       //if match hasnt ended, only then u can win by default
-      stopTimer(); //when final result gets emitted timer stops
-      console.log(`Win by default`);
-      createTag("h3", value, final_resut_div);
-      createTag("button", "Go Back", final_resut_div, "go_back_btn");
-      document.getElementById("go_back_btn").addEventListener("click", () => {
-        location.href = `../`;
-      });
-      disable_enable_Buttons("disable");
+      if (socketid !== mySocketID) {
+        stopTimer(); //when final result gets emitted timer stops
+        console.log(`Win by default`);
+        createTag("h3", value, final_resut_div);
+        createTag("button", "Go Back", final_resut_div, "go_back_btn");
+        document.getElementById("go_back_btn").addEventListener("click", () => {
+          location.href = `../`;
+        });
+        disable_enable_Buttons("disable");
+      } else {
+        console.log(`Lost by default`);
+        stopTimer(); //when final result gets emitted timer stops
+        createTag("h3", `Warning exceeded...You loose`, final_resut_div);
+        createTag("button", "Go Back", final_resut_div, "go_back_btn");
+        document.getElementById("go_back_btn").addEventListener("click", () => {
+          location.href = `../`;
+        });
+        disable_enable_Buttons("disable");
+      }
     }
   });
 
@@ -290,6 +314,8 @@ socket.on("start match", () => {
     ],
   });
 
+  let localStream; //for saving the local stream ie yours
+
   socket.on("start call", () => {
     // Initiate WebRTC process here
     console.log(`starting starWebRTC()`);
@@ -302,10 +328,10 @@ socket.on("start match", () => {
       .getUserMedia({ audio: true })
       .then(function (stream) {
         // Add user's audio stream to peer connection
+        localStream = stream;
         stream
           .getTracks()
           .forEach((track) => peerConnection.addTrack(track, stream));
-
         peerConnection.onicecandidate = handleICECandidateEvent;
         // Add this event listener for handling remote audio stream
         peerConnection
@@ -335,13 +361,10 @@ socket.on("start match", () => {
       console.log(`offer recieved`);
       // Set remote description
       await peerConnection.setRemoteDescription(offer);
-
       // Create answer
       const answer = await peerConnection.createAnswer();
-
       // Set local description
       await peerConnection.setLocalDescription(answer);
-
       // Send answer to the other user via signaling server
       socket.emit("answer", answer, room_id);
     } catch (error) {
@@ -377,48 +400,57 @@ socket.on("start match", () => {
       remoteAudioElement.srcObject = event.streams[0];
     }
   }
-
-  //code for timer
-  let timerInterval;
-  let timeLeft = 25; // Initial time in seconds
-
-  function startTimer() {
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      if (timeLeft < 0) {
-        clearInterval(timerInterval); // Stop the timer when time runs out
-        timerRunsOut(); // Call function when timer runs out
-      } else {
-        updateTimerDisplay(); // Update the timer display
-      }
-    }, 1000); // Update timer every second (1000 milliseconds)
-  }
-
-  function stopTimer() {
-    clearInterval(timerInterval); // Stop the timer
-  }
-
-  function resetTimer() {
-    stopTimer(); // Stop the timer if it's running
-    timeLeft = 25; // Reset the time
-    updateTimerDisplay(); // Update the display with the reset time
-  }
-
-  function updateTimerDisplay() {
-    // Display the remaining time wherever you want
-    let timerElement = document.getElementById("timer");
-    // Format the time left (for example, as minutes and seconds)
-    let minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
-    let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
-    // Update the content of the element with the formatted time
-    timerElement.textContent = `Time left: ${formattedTime}`;
-  }
-
-  function timerRunsOut() {
-    console.log("Timer has run out!");
-    // Add your logic to execute when the timer runs out
-    socket.emit("Time out", room_id);
-  }
+  //https://stackoverflow.com/questions/34469618/how-to-add-audio-video-mute-unmute-buttons-in-webrtc-video-chat for toggling on and off audio btn
+  const audio_control = document.getElementById("audio_control");
+  audio_control.addEventListener("click", () => {
+    localStream.getAudioTracks()[0].enabled =
+      !localStream.getAudioTracks()[0].enabled;
+    console.log(`audio control ${localStream.getAudioTracks()[0].enabled}`);
+    if (localStream.getAudioTracks()[0].enabled)
+      audio_control.innerText = "Mute";
+    else audio_control.innerText = "Unmite";
+  });
 });
+//code for timer
+let timerInterval;
+let timeLeft = 5; // Initial time in seconds
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    if (timeLeft < 0) {
+      clearInterval(timerInterval); // Stop the timer when time runs out
+      timerRunsOut(); // Call function when timer runs out
+    } else {
+      updateTimerDisplay(); // Update the timer display
+    }
+  }, 1000); // Update timer every second (1000 milliseconds)
+}
+
+function stopTimer() {
+  clearInterval(timerInterval); // Stop the timer
+}
+
+function resetTimer() {
+  stopTimer(); // Stop the timer if it's running
+  timeLeft = 5; // Reset the time
+  updateTimerDisplay(); // Update the display with the reset time
+}
+
+function updateTimerDisplay() {
+  // Display the remaining time wherever you want
+  let timerElement = document.getElementById("timer");
+  // Format the time left (for example, as minutes and seconds)
+  let minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+  let formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+  // Update the content of the element with the formatted time
+  timerElement.textContent = `Time left: ${formattedTime}`;
+}
+
+function timerRunsOut() {
+  console.log("Timer has run out!");
+  // Add your logic to execute when the timer runs out
+  socket.emit("Time out", room_id);
+}
