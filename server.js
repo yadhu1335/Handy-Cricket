@@ -294,8 +294,18 @@ io.on("connection", (socket) => {
       `Socket ID with the largest score: ${largestSocketId}, Score: ${largestScore},Socket ID with the least score: ${leastSocketId}, Score: ${leastScore}`
     );
 
-    io.to(largestSocketId).emit("final result", largestScore, "win");
-    io.to(leastSocketId).emit("final result", leastScore, "lose", largestScore);
+    if (leastScore === largestScore) {
+      console.log(`Match is draw`);
+      io.to(room_id).emit("draw");
+    } else {
+      io.to(largestSocketId).emit("final result", largestScore, "win");
+      io.to(leastSocketId).emit(
+        "final result",
+        leastScore,
+        "lose",
+        largestScore
+      );
+    }
   }
 
   socket.on("Time out", (room_id) => {
@@ -348,6 +358,13 @@ io.on("connection", (socket) => {
         "Player Disconnected. You win by Default",
         socket.id
       );
+
+    const room_idToDelete = socketRoomMap[socket.id]; //to get the roomid
+
+    if (Rooms.hasOwnProperty(room_idToDelete)) {
+      console.log(`Deleting ${room_idToDelete}`);
+      delete Rooms[room_idToDelete];
+    }
   });
 });
 server.listen(PORT, () =>

@@ -263,7 +263,8 @@ socket.on("start match", () => {
     }
 
     document.getElementById("go_back_btn").addEventListener("click", () => {
-      location.href = `../views/index.html`;
+      // location.href = `../views/index.html`;
+      location.href = `../`;
     });
   });
 
@@ -410,7 +411,7 @@ socket.on("start match", () => {
 });
 //code for timer
 let timerInterval;
-let timeLeft = 5; // Initial time in seconds
+let timeLeft = 10; // Initial time in seconds
 
 function startTimer() {
   timerInterval = setInterval(() => {
@@ -430,7 +431,7 @@ function stopTimer() {
 
 function resetTimer() {
   stopTimer(); // Stop the timer if it's running
-  timeLeft = 5; // Reset the time
+  timeLeft = 10; // Reset the time
   updateTimerDisplay(); // Update the display with the reset time
 }
 
