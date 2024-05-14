@@ -327,7 +327,7 @@ io.on("connection", (socket) => {
         "Warning exceeded for opponent you win",
         socket.id
       );
-      //!!!IMP socket.is is to check which player lost. we are emitting socketid who lost
+      //!!!IMP socket.id is to check which player lost. we are emitting socketid who lost
     }
   });
 

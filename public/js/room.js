@@ -206,9 +206,9 @@ socket.on("start match", () => {
   socket.on("update you_are_currently", (value) => {
     document.getElementById("score").innerText = `score=${0}`;
     if (value === "bat") {
-      document.getElementById(
-        "prevScore"
-      ).innerHTML = `score to beat is ${prevScore}`;
+      document.getElementById("prevScore").innerHTML = `score to beat is ${
+        prevScore + 1
+      }`; //+1 to the score of first batsman
     } else {
       document.getElementById(
         "prevScore"
@@ -270,10 +270,11 @@ socket.on("start match", () => {
 
   socket.on("draw", () => {
     createTag("p", "The match has ended in a Draw", final_resut_div);
+    createTag("button", "Go Back", final_resut_div, "go_back_btn");
     document.getElementById("go_back_btn").addEventListener("click", () => {
-      // location.href = `../views/index.html`;
       location.href = `../`;
     });
+    match_ended = true;
   });
 
   socket.on("won_by_default", (value, socketid) => {
@@ -284,6 +285,7 @@ socket.on("start match", () => {
       );
       //if match hasnt ended, only then u can win by default
       if (socketid !== mySocketID) {
+        match_ended = true;
         stopTimer(); //when final result gets emitted timer stops
         console.log(`Win by default`);
         createTag("h3", value, final_resut_div);
@@ -293,6 +295,7 @@ socket.on("start match", () => {
         });
         disable_enable_Buttons("disable");
       } else {
+        match_ended = true;
         console.log(`Lost by default`);
         stopTimer(); //when final result gets emitted timer stops
         createTag("h3", `Warning exceeded...You loose`, final_resut_div);
@@ -417,6 +420,7 @@ socket.on("start match", () => {
     else audio_control.innerText = "Unmite";
   });
 });
+
 //code for timer
 let timerInterval;
 let timeLeft = 10; // Initial time in seconds
