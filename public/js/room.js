@@ -132,8 +132,8 @@ socket.on("start match", () => {
         `Congrats!!! The Toss is in favour of ${toss_favor}`,
         toss_choice_parentDiv
       ); //displaying that they have won the toss
-      createTag("button", "Bat", Game_area, "bat"); //creating button for "BAT"
-      createTag("button", "Bowl", Game_area, "bowl"); //creating button for "BOWL"
+      createTag("button", "Bat🏏", Game_area, "bat"); //creating button for "BAT"
+      createTag("button", "Bowl⚾", Game_area, "bowl"); //creating button for "BOWL"
 
       document.getElementById("bat").addEventListener("click", function () {
         socket.emit("bat_or_bowl choice", "bat", room_id);
@@ -253,7 +253,7 @@ socket.on("start match", () => {
       createTag("h3", "Sorry!! You loose the game", final_resut_div);
       createTag(
         "h3",
-        `Your score=${score} , u lost by ${Math.abs(
+        `Your score=${score} , You lost by ${Math.abs(
           score - largestScore
         )} runs`,
         final_resut_div
