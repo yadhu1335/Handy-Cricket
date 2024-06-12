@@ -367,6 +367,16 @@ io.on("connection", (socket) => {
     }
   });
 });
-server.listen(PORT, () =>
-  console.log(`Server is up and running on port http://localhost:${PORT}`)
-);
+
+const asciiArt = `
+██╗   ██╗ █████╗ ██████╗ ██╗  ██╗██╗   ██╗
+╚██╗ ██╔╝██╔══██╗██╔══██╗██║  ██║██║   ██║
+ ╚████╔╝ ███████║██║  ██║███████║██║   ██║
+  ╚██╔╝  ██╔══██║██║  ██║██╔══██║██║   ██║
+   ██║   ██║  ██║██████╔╝██║  ██║╚██████╔╝
+   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ `;
+
+server.listen(PORT, () => {
+  console.log(asciiArt);
+  console.log(`Server is up and running on port http://localhost:${PORT}`);
+});

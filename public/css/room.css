@@ -1,13 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap");
 
-.button_value {
+/* .button_value {
   width: 50px;
-  /* padding: 0px;
-  margin: 0px;
-  border: 0px; */
   border-radius: 50%;
-  /* background-color: white; */
-}
+} */
 
 #players {
   font-family: "Poetsen One", sans-serif;
@@ -25,10 +21,43 @@
 #roomcode_div p {
   margin-bottom: 0px;
   width: 75px;
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 #roomcode_div #roomcode_btn {
   margin-top: 16px;
   margin-left: 2px;
+}
+
+#top_section {
+  display: flex;
+  justify-content: space-between;
+}
+
+#audio_div {
+  display: flex;
+  width: 100px;
+  justify-content: center;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  border-left-width: 25px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+#audio_control {
+  width: 166px;
+}
+
+/* button background */
+
+.button_value {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
 }

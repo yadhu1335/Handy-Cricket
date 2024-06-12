@@ -61,6 +61,7 @@ function disable_enable_Buttons(enable_or_disable) {
     console.log(`disabling buttons`);
     for (let i = 1; i <= 6; i++) {
       document.getElementById(i + "").disabled = true;
+      document.getElementById(i + "").style.cursor = "not-allowed";
     }
   }
 
@@ -68,6 +69,7 @@ function disable_enable_Buttons(enable_or_disable) {
     console.log(`enabling buttons`);
     for (let i = 1; i <= 6; i++) {
       document.getElementById(i + "").disabled = false;
+      document.getElementById(i + "").style.cursor = "pointer";
     }
   }
 }
@@ -417,7 +419,7 @@ socket.on("start match", () => {
     console.log(`audio control ${localStream.getAudioTracks()[0].enabled}`);
     if (localStream.getAudioTracks()[0].enabled)
       audio_control.innerText = "Mute";
-    else audio_control.innerText = "Unmite";
+    else audio_control.innerText = "Unmute";
   });
 });
 

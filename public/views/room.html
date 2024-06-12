@@ -8,11 +8,20 @@
     <title>Handy Cricket</title>
   </head>
   <body>
-    <center><p id="players"></p></center>
+    <div id="top_section">
+      <div id="audio_div">
+        <button id="audio_control">Mute</button>
+        <audio id="audio" autoplay style="display: none"></audio>
+      </div>
 
-    <div id="audio_div">
-      <button id="audio_control">Mute</button>
-      <audio id="audio" autoplay style="display: none"></audio>
+      <center><p id="players"></p></center>
+
+      <div id="roomcode_div">
+        <p id="roomcode"></p>
+        <button id="roomcode_btn" onclick="alert('Copied succesfully')">
+          Copy
+        </button>
+      </div>
     </div>
 
     <div id="insufficient_players">
@@ -32,12 +41,48 @@
       </div>
       <div id="timer"></div>
       <div id="choose_value" style="display: none">
-        <button class="button_value" id="1">1</button>
-        <button class="button_value" id="2">2</button>
-        <button class="button_value" id="3">3</button>
-        <button class="button_value" id="4">4</button>
-        <button class="button_value" id="5">5</button>
-        <button class="button_value" id="6">6</button>
+        <button
+          class="button_value"
+          id="1"
+          style="background-image: url(../image/one.png)"
+        >
+          1
+        </button>
+        <button
+          class="button_value"
+          id="2"
+          style="background-image: url(../image/two.png)"
+        >
+          2
+        </button>
+        <button
+          class="button_value"
+          id="3"
+          style="background-image: url(../image/three.png)"
+        >
+          3
+        </button>
+        <button
+          class="button_value"
+          id="4"
+          style="background-image: url(../image/four.png)"
+        >
+          4
+        </button>
+        <button
+          class="button_value"
+          id="5"
+          style="background-image: url(../image/five.png)"
+        >
+          5
+        </button>
+        <button
+          class="button_value"
+          id="6"
+          style="background-image: url(../image/six.png)"
+        >
+          6
+        </button>
       </div>
       <div id="button_value_of_users" style="display: none">
         <p>Your Choice: <span id="your_selection">0</span></p>
@@ -45,13 +90,6 @@
       </div>
 
       <div id="final result"></div>
-    </div>
-
-    <div id="roomcode_div">
-      <p id="roomcode"></p>
-      <button id="roomcode_btn" onclick="alert('Copied succesfully')">
-        Copy
-      </button>
     </div>
 
     <!-- Footer -->

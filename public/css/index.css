@@ -43,7 +43,8 @@ h3 {
   font-family: "algerian", Times, serif;
   font-weight: bold;
   font-size: 50px;
-  color: rgb(255, 136, 0);
+  /* color: rgb(255, 136, 0); */
+  color: #daef0b;
   font-style: italic;
   text-shadow: -2px -2px 0 BLACK, -2px -1px 0 BLACK, -2px 0px 0 BLACK,
     -2px 1px 0 BLACK, -2px 2px 0 BLACK, -1px -2px 0 BLACK, -1px -1px 0 BLACK,
