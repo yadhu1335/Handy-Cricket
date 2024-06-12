@@ -5,6 +5,13 @@
   border-radius: 50%;
 } */
 
+p {
+  font-family: "Poetsen One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: larger;
+}
+
 #players {
   font-family: "Poetsen One", sans-serif;
   font-weight: 400;
@@ -20,7 +27,7 @@
 }
 #roomcode_div p {
   margin-bottom: 0px;
-  width: 75px;
+  width: 100px;
   border: 1px solid black;
 }
 
@@ -32,6 +39,7 @@
 #top_section {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 50px;
 }
 
 #audio_div {
@@ -61,3 +69,78 @@
   color: white;
   font-size: 16px;
 }
+
+/* alngning main parts */
+#second_nd_part {
+  display: flex;
+}
+
+#left_section {
+  width: 150px;
+  margin-top: 0px;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+#choose_value2 {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  width: 150px;
+  height: 200px;
+  margin-top: 25px;
+}
+
+#right_top {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+}
+
+#heads_or_tails {
+  display: flex;
+  justify-content: center;
+}
+
+#heads {
+  margin-right: 25px;
+}
+
+#Game_Area {
+  display: flex;
+  justify-content: center;
+}
+
+#bat {
+  margin-right: 25px;
+  width: 45px;
+  height: 20px;
+}
+
+#bowl {
+  width: 50px;
+  height: 20px;
+}
+
+#button_value_of_users2 {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  column-gap: 5em;
+}
+
+#choice {
+  margin-left: 50px;
+}
+
+/* #final_result {
+  position: fixed;
+  top: 34%;
+  right: 23%;
+  background-color: honeydew;
+  width: 750px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */

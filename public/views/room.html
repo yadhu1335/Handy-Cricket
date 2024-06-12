@@ -29,64 +29,77 @@
     </div>
 
     <div id="match" style="display: none">
-      <div id="heads_or_tails">
-        <button id="heads">Heads</button>
-        <button id="tails">Tails</button>
+      <div id="second_nd_part">
+        <div id="left_section">
+          <div id="timer"></div>
+          <div id="choose_value" style="display: none">
+            <div id="choose_value2">
+              <button
+                class="button_value"
+                id="1"
+                style="background-image: url(../image/one.png)"
+              >
+                1
+              </button>
+              <button
+                class="button_value"
+                id="2"
+                style="background-image: url(../image/two.png)"
+              >
+                2
+              </button>
+              <button
+                class="button_value"
+                id="3"
+                style="background-image: url(../image/three.png)"
+              >
+                3
+              </button>
+              <button
+                class="button_value"
+                id="4"
+                style="background-image: url(../image/four.png)"
+              >
+                4
+              </button>
+              <button
+                class="button_value"
+                id="5"
+                style="background-image: url(../image/five.png)"
+              >
+                5
+              </button>
+              <button
+                class="button_value"
+                id="6"
+                style="background-image: url(../image/six.png)"
+              >
+                6
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="right_top">
+          <div id="heads_or_tails">
+            <button id="heads">Heads</button>
+            <button id="tails">Tails</button>
+          </div>
+          <div id="choice"></div>
+          <div id="Game_Area"></div>
+        </div>
+        <div id="score_are">
+          <h1 id="score"></h1>
+          <h1 id="prevScore"></h1>
+        </div>
+        <!-- </div> -->
       </div>
-      <div id="choice"></div>
-      <div id="Game_Area"></div>
-      <div id="score_are">
-        <h1 id="score"></h1>
-        <h1 id="prevScore"></h1>
-      </div>
-      <div id="timer"></div>
-      <div id="choose_value" style="display: none">
-        <button
-          class="button_value"
-          id="1"
-          style="background-image: url(../image/one.png)"
-        >
-          1
-        </button>
-        <button
-          class="button_value"
-          id="2"
-          style="background-image: url(../image/two.png)"
-        >
-          2
-        </button>
-        <button
-          class="button_value"
-          id="3"
-          style="background-image: url(../image/three.png)"
-        >
-          3
-        </button>
-        <button
-          class="button_value"
-          id="4"
-          style="background-image: url(../image/four.png)"
-        >
-          4
-        </button>
-        <button
-          class="button_value"
-          id="5"
-          style="background-image: url(../image/five.png)"
-        >
-          5
-        </button>
-        <button
-          class="button_value"
-          id="6"
-          style="background-image: url(../image/six.png)"
-        >
-          6
-        </button>
-      </div>
+
       <div id="button_value_of_users" style="display: none">
-        <p>Your Choice: <span id="your_selection">0</span></p>
-        <p>Opponents choice: <span id="opponents_selection">0</span></p>
+        <div id="button_value_of_users2">
+          <p>Your Choice: <span id="your_selection">0</span></p>
+          <p>Opponents choice: <span id="opponents_selection">0</span></p>
+        </div>
       </div>
 
       <div id="final result"></div>
