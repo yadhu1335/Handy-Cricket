@@ -126,6 +126,7 @@ socket.on("start match", () => {
     parentDiv.appendChild(tag);
   }
   const Game_area = document.getElementById("Game_Area");
+  const bat_and_bowl = document.getElementById("bat_and_bowl");
   socket.on("toss result", (lose_or_win, toss_favor) => {
     if (lose_or_win === "won") {
       console.log(`You won the toss... the toss is in favour of ${toss_favor}`);
@@ -134,8 +135,8 @@ socket.on("start match", () => {
         `Congrats!!! The Toss is in favour of ${toss_favor}`,
         toss_choice_parentDiv
       ); //displaying that they have won the toss
-      createTag("button", "Bat🏏", Game_area, "bat"); //creating button for "BAT"
-      createTag("button", "Bowl⚾", Game_area, "bowl"); //creating button for "BOWL"
+      createTag("button", "Bat🏏", bat_and_bowl, "bat"); //creating button for "BAT"
+      createTag("button", "Bowl⚾", bat_and_bowl, "bowl"); //creating button for "BOWL"
 
       document.getElementById("bat").addEventListener("click", function () {
         socket.emit("bat_or_bowl choice", "bat", room_id);
