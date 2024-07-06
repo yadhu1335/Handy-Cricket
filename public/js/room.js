@@ -317,14 +317,8 @@ socket.on("start match", () => {
   const peerConnection = new RTCPeerConnection({
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" }, // Specify STUN server
-      // {
-      //   urls: "turn:global.relay.metered.ca:443",
-      //   username: "bc23f73045981b328f3cfcf6",
-      //   credential: "pKmB1mz2nJDIRSth",
-      // }, // Specify TURN server with authentication
     ],
   });
-  //un comment turn after finishing final year projetc
 
   let localStream; //for saving the local stream ie yours
 
