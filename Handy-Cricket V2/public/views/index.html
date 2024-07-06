@@ -3,19 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./image/favicon.png" />
+    <link rel="stylesheet" href="./css/index.css" />
     <title>Handy Cricket</title>
   </head>
   <body>
-    <div>
+    <img src="../image/handy.png" />
+    <div id="main_part">
+      <br />
       <form id="room_id_form">
         <!-- <label for="room ID">Enter Room ID</label> -->
         <input type="text" id="room_id" placeholder="Enter the Room ID" />
-        <input type="submit" />
+        <input type="submit" style="background-color: #fee6e3" />
       </form>
-
-      <button id="create_room">Create room</button> <br />
-      <button id="bot">Bot</button> <br />
-      <button id="tutorial">How to Play</button> <br />
+      <div id="other_buttons">
+        <button id="create_room" class="button-56">Create room</button>
+        <button id="bot" class="button-56">Play with Bot</button>
+      </div>
+      <div id="tutorial">
+        <button id="tutorial" class="button-56">How to Play</button>
+      </div>
     </div>
   </body>
   <script src="../js/index.js"></script>

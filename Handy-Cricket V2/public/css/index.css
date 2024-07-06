@@ -1,0 +1,111 @@
+:root {
+  background-image: url("../image/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+img {
+  display: block;
+  width: 800px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+}
+
+#main_part {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  flex-direction: column;
+}
+
+form {
+  display: inline-block; /* Auto-sizes to content */
+  margin-left: auto; /* Centers it horizontally */
+  margin-right: auto;
+  text-align: left; /* Left-align form contents */
+}
+
+input {
+  height: 30px;
+  border-radius: 8px;
+}
+
+#other_buttons {
+  width: 550px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 5%;
+  margin-bottom: 10%;
+}
+
+#tutorial {
+  display: flex;
+  place-content: center;
+}
+
+/* CSS */
+.button-56 {
+  align-items: center;
+  background-color: #fee6e3;
+  border: 2px solid #111;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  /* height: 48px; */
+  height: 30px;
+  justify-content: center;
+  line-height: 24px;
+  max-width: 100%;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-56:after {
+  background-color: #111;
+  border-radius: 8px;
+  content: "";
+  display: block;
+  /* height: 48px; */
+  height: 30px;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  top: -2px;
+  transform: translate(8px, 8px);
+  transition: transform 0.2s ease-out;
+  z-index: -1;
+}
+
+.button-56:hover:after {
+  transform: translate(0, 0);
+}
+
+.button-56:active {
+  background-color: #ffdeda;
+  outline: 0;
+}
+
+.button-56:hover {
+  outline: 0;
+}
+
+@media (min-width: 768px) {
+  .button-56 {
+    padding: 0 40px;
+  }
+}
