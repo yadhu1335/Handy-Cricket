@@ -6,7 +6,7 @@
   background-position: center;
 }
 
-img {
+#handy-cricket_img {
   display: block;
   width: 800px;
   height: auto;
@@ -34,14 +34,36 @@ input {
   border-radius: 8px;
 }
 
+#join_button {
+  cursor: pointer;
+  background-color: #fee6e3;
+}
+
 #other_buttons {
-  width: 550px;
+  width: 650px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   margin-top: 5%;
   margin-bottom: 10%;
+}
+
+#searching_div {
+  position: fixed;
+  top: 50%;
+  bottom: 50%;
+  left: 50%;
+  right: 50%;
+  display: flex;
+  flex-direction: column-reverse;
+  place-items: center;
+}
+
+#searching_div_buttons {
+  display: flex;
+  width: 400px;
+  justify-content: space-around;
 }
 
 #tutorial {
@@ -108,4 +130,9 @@ input {
   .button-56 {
     padding: 0 40px;
   }
+}
+
+.blur {
+  filter: blur(5px);
+  pointer-events: none; /* Prevents interaction with blurred elements */
 }

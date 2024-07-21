@@ -8,22 +8,36 @@
     <title>Handy Cricket</title>
   </head>
   <body>
-    <img src="../image/handy.png" />
+    <img
+      src="../image/handy.png"
+      id="handy-cricket_img"
+      alt="handycricket_title.png"
+    />
     <div id="main_part">
       <br />
       <form id="room_id_form">
         <!-- <label for="room ID">Enter Room ID</label> -->
         <input type="text" id="room_id" placeholder="Enter the Room ID" />
-        <input type="submit" style="background-color: #fee6e3" />
+        <input type="submit" value="Join" id="join_button" />
       </form>
       <div id="other_buttons">
         <button id="create_room" class="button-56">Create room</button>
         <button id="bot" class="button-56">Play with Bot</button>
+        <button id="random_room" class="button-56">Join Random Room</button>
       </div>
+
+      <div id="searching_div">
+        <p id="searching_text"></p>
+        <div id="searching_div_buttons"></div>
+      </div>
+
       <div id="tutorial">
         <button id="tutorial" class="button-56">How to Play</button>
       </div>
     </div>
+
+    <!-- <div id="searching"><p>Searching</p></div> -->
   </body>
+  <script src="https://cdn.socket.io/4.5.3/socket.io.min.js"></script>
   <script src="../js/index.js"></script>
 </html>
