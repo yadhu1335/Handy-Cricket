@@ -10,6 +10,8 @@ const random_room = document.getElementById("random_room");
 const searching_div = document.getElementById("searching_div");
 const searching_text = document.getElementById("searching_text");
 const searching_div_buttons = document.getElementById("searching_div_buttons");
+const cancel_button = document.getElementById("cancel_button");
+const bot_button = document.getElementById("bot_button");
 
 const Socket = io();
 
@@ -56,15 +58,9 @@ random_room.addEventListener("click", () => {
     join_button
   );
 
-  // Blur all elements inside mainPart except searchingDiv
-  Array.from(main_part.children).forEach((child) => {
-    if (child !== searching_div) {
-      child.classList.add("blur");
-    }
-  });
+  main_part.classList.add("blur");
+  searching_div.style.display = "flex";
 
-  // creating "searching..." inside searching_div
-  // const pElement = document.createElement("p");
   searching_text.textContent = "Searching...";
   document.getElementById("searching_div").appendChild(searching_text);
 
@@ -82,10 +78,39 @@ random_room.addEventListener("click", () => {
     "button",
     "Cancel",
     searching_div_buttons,
-    "quit_button",
+    "cancel_button",
     "button-56"
   );
   createTag("button", "Bot", searching_div_buttons, "bot_button", "button-56");
+  // gpt start
+  const cancelButton = document.getElementById("cancel_button");
+  if (cancelButton) {
+    cancelButton.addEventListener("click", () => {
+      console.log(`search cancelled`);
+      Socket.emit("cancel_search");
+
+      // Clear the interval for updating the ellipsis
+      clearInterval(ellipsisInterval);
+
+      // Hide the searching_div and remove dynamically added buttons and text
+      searching_div.style.display = "none";
+
+      // Optionally, reset the blurred effect and re-enable the buttons
+      main_part.classList.remove("blur");
+      enable_disable__button(
+        "enabled",
+        create_room,
+        bot,
+        random_room,
+        join_button
+      );
+
+      // Clear any dynamically added elements if necessary
+      searching_div_buttons.innerHTML = ""; // This will remove all child elements
+    });
+  }
+  // gpt end
+
   Socket.emit("random_room");
   Socket.on("assigned_room_id", (room_id) => {
     clearInterval(ellipsisInterval);
@@ -93,6 +118,27 @@ random_room.addEventListener("click", () => {
     location.href = `/room/${room_id}`;
   });
 });
+
+// cancel_button.addEventListener("click", () => {
+//   console.log(`search cancelled`);
+//   Socket.emit("cancel_search");
+
+//   // Hide the searching_div and remove dynamically added buttons and text
+//   searching_div.style.display = "none";
+
+//   // Optionally, reset the blurred effect and re-enable the buttons
+//   main_part.classList.remove("blur");
+//   enable_disable__button(
+//     "enabled",
+//     create_room,
+//     bot,
+//     random_room,
+//     join_button
+//   );
+
+//   // Clear any dynamically added elements if necessary
+//   searching_div_buttons.innerHTML = ""; // This will remove all child elements
+// });
 
 //functions starts here
 // Creates a value. invoke when user creates a room

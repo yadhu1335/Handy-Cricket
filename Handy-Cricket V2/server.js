@@ -61,6 +61,20 @@ io.on("connection", (socket) => {
       //removing the first 2 element from the array
     }
   });
+
+  socket.on("cancel_search", () => {
+    const index = random_room.indexOf(socket.id);
+    console.log(`socketid to be removed=${socket.id}`);
+    random_room.splice(index, 1); //removing random id
+  });
+
+  socket.on("disconnect", () => {
+    if (random_room.indexOf(socket.id) != -1) {
+      const index = random_room.indexOf(socket.id);
+      console.log(`socketid to be removed=${socket.id}`);
+      random_room.splice(index, 1); //removing random id
+    }
+  });
 });
 
 const asciiArt = `

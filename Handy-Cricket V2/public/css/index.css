@@ -1,9 +1,25 @@
-:root {
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+#main_part {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: url("../image/bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
 }
 
 #handy-cricket_img {
@@ -13,13 +29,6 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 100px;
-}
-
-#main_part {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  flex-direction: column;
 }
 
 form {
@@ -64,6 +73,11 @@ input {
   display: flex;
   width: 400px;
   justify-content: space-around;
+}
+
+#searching_div p {
+  font-size: 24px; /* Adjust the size as needed */
+  font-weight: bold; /* Optional: make the text bold */
 }
 
 #tutorial {
