@@ -3,11 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../image/favicon.png" />
+    <link rel="stylesheet" href="../css/room.css" />
     <title>Handy Cricket</title>
   </head>
   <body>
-    <p>HII</p>
+    <div id="messages_to_user">
+      <div id="insufficient_players">
+        <h4>Waiting for the opponent to join</h4>
+      </div>
+    </div>
+    <div id="main_part"></div>
   </body>
-  <script src="../js/room.js"></script>
   <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+  <script src="../js/room.js"></script>
 </html>

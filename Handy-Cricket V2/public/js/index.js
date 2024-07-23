@@ -10,10 +10,14 @@ const random_room = document.getElementById("random_room");
 const searching_div = document.getElementById("searching_div");
 const searching_text = document.getElementById("searching_text");
 const searching_div_buttons = document.getElementById("searching_div_buttons");
-const cancel_button = document.getElementById("cancel_button");
-const bot_button = document.getElementById("bot_button");
-
 const Socket = io();
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    // The page was loaded from the cache
+    window.location.reload();
+  }
+});
 
 room_id_form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -24,7 +28,7 @@ room_id_form.addEventListener("submit", (event) => {
     console.log(`empty room id`);
     alert("Invalid Room ID");
   } else {
-    Socket.emit("room_exist", room_id);
+    Socket.emit("room_exist", room_id); //checking whether the room exists or not
   }
   Socket.on("room_exist", (boolean_value) => {
     if (boolean_value) {
@@ -82,34 +86,42 @@ random_room.addEventListener("click", () => {
     "button-56"
   );
   createTag("button", "Bot", searching_div_buttons, "bot_button", "button-56");
-  // gpt start
-  const cancelButton = document.getElementById("cancel_button");
-  if (cancelButton) {
-    cancelButton.addEventListener("click", () => {
+
+  //function to emit cancel_search and to return everything to normal
+  function cancel_search() {
+    Socket.emit("cancel_search");
+    // Clear the interval for updating the ellipsis
+    clearInterval(ellipsisInterval);
+    // Hide the searching_div and remove dynamically added buttons and text
+    searching_div.style.display = "none";
+    // Optionally, reset the blurred effect and re-enable the buttons
+    main_part.classList.remove("blur");
+    enable_disable__button(
+      "enabled",
+      create_room,
+      bot,
+      random_room,
+      join_button
+    );
+    searching_div_buttons.innerHTML = ""; // This will remove all child elements
+  }
+
+  // event listner for cancel button
+  const cancel_button = document.getElementById("cancel_button");
+  if (cancel_button) {
+    cancel_button.addEventListener("click", () => {
       console.log(`search cancelled`);
-      Socket.emit("cancel_search");
-
-      // Clear the interval for updating the ellipsis
-      clearInterval(ellipsisInterval);
-
-      // Hide the searching_div and remove dynamically added buttons and text
-      searching_div.style.display = "none";
-
-      // Optionally, reset the blurred effect and re-enable the buttons
-      main_part.classList.remove("blur");
-      enable_disable__button(
-        "enabled",
-        create_room,
-        bot,
-        random_room,
-        join_button
-      );
-
-      // Clear any dynamically added elements if necessary
-      searching_div_buttons.innerHTML = ""; // This will remove all child elements
+      cancel_search();
     });
   }
-  // gpt end
+  // event listner for bot button
+  const bot_button = document.getElementById("bot_button");
+  if (bot_button) {
+    bot_button.addEventListener("click", () => {
+      cancel_search(); //this line is not required. i wrote this before creating the windlows reload in the line 15. Will work completely fine even if we delte this line of code.
+      location.href = "/bot";
+    });
+  }
 
   Socket.emit("random_room");
   Socket.on("assigned_room_id", (room_id) => {
@@ -118,27 +130,6 @@ random_room.addEventListener("click", () => {
     location.href = `/room/${room_id}`;
   });
 });
-
-// cancel_button.addEventListener("click", () => {
-//   console.log(`search cancelled`);
-//   Socket.emit("cancel_search");
-
-//   // Hide the searching_div and remove dynamically added buttons and text
-//   searching_div.style.display = "none";
-
-//   // Optionally, reset the blurred effect and re-enable the buttons
-//   main_part.classList.remove("blur");
-//   enable_disable__button(
-//     "enabled",
-//     create_room,
-//     bot,
-//     random_room,
-//     join_button
-//   );
-
-//   // Clear any dynamically added elements if necessary
-//   searching_div_buttons.innerHTML = ""; // This will remove all child elements
-// });
 
 //functions starts here
 // Creates a value. invoke when user creates a room

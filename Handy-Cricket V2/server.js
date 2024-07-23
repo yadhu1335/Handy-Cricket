@@ -28,6 +28,7 @@ app.get("/howtoplay", (req, res) => {
 let exisiting_room = []; //array containing ll the rooms that exists.used for validation when user enters room id and joins.
 let Rooms = {};
 let random_room = []; // for saving socket.id of people who want to play aganist random people.
+let socket_to_room_map = {};
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} connected`);
@@ -68,11 +69,56 @@ io.on("connection", (socket) => {
     random_room.splice(index, 1); //removing random id
   });
 
+  //code for room.js
+  //when a user joins a room
+  socket.on("join_room", (room_id) => {
+    if (!Rooms[room_id]) {
+      console.log(`Room ${room_id} does not exist`);
+      io.to(socket.id).emit("alert", "Error encountered in room...Go back");
+      return;
+    } //checking if the room exists in the Rooms object
+
+    //if the usercount in that particular room is more than 2 then you cannot join
+    if (!(Rooms[room_id].userCount < 2)) {
+      console.log("number of user exceeded");
+      socket.emit("alert", "Room is full");
+      return;
+    }
+    //if the usercount is less than 2 you can join
+    else {
+      socket.join(room_id);
+      Rooms[room_id].userCount += 1;
+      console.log(`${socket.id} joined in ${room_id}`);
+      console.log(`users in ${room_id} are ${JSON.stringify(Rooms[room_id])}`);
+      socket_to_room_map[socket.id] = room_id;
+    }
+    //when the number of users hit 2 the game starts this if condition is used for that purpose.
+    if (Rooms[room_id].userCount === 2) {
+      io.to(room_id).emit("start_match"); //changed from socket to io bcoz it will not emit to the 2nd user who
+      console.log("Number of users is 2 so everyone can start playing");
+    }
+  });
+
   socket.on("disconnect", () => {
     if (random_room.indexOf(socket.id) != -1) {
       const index = random_room.indexOf(socket.id);
       console.log(`socketid to be removed=${socket.id}`);
       random_room.splice(index, 1); //removing random id
+    }
+
+    socket
+      .to(socket_to_room_map[socket.id])
+      .emit(
+        "won_by_default",
+        "Player Disconnected. You win by Default",
+        socket.id
+      );
+
+    const room_id_to_delete = socket_to_room_map[socket.id]; //to get the roomid
+
+    if (Rooms.hasOwnProperty(room_id_to_delete)) {
+      console.log(`Deleting ${room_id_to_delete}`);
+      delete Rooms[room_id_to_delete];
     }
   });
 });
