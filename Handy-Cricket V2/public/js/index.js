@@ -1,4 +1,5 @@
 console.log("js working");
+const bg_image = document.getElementById("bg_image");
 const main_part = document.getElementById("main_part");
 const room_id_form = document.getElementById("room_id_form");
 const room_id_input = document.getElementById("room_id"); //The input field where room id is recieved
@@ -62,6 +63,7 @@ random_room.addEventListener("click", () => {
     join_button
   );
 
+  bg_image.classList.add("blur");
   main_part.classList.add("blur");
   searching_div.style.display = "flex";
 
@@ -95,6 +97,7 @@ random_room.addEventListener("click", () => {
     // Hide the searching_div and remove dynamically added buttons and text
     searching_div.style.display = "none";
     // Optionally, reset the blurred effect and re-enable the buttons
+    bg_image.classList.remove("blur");
     main_part.classList.remove("blur");
     enable_disable__button(
       "enabled",
