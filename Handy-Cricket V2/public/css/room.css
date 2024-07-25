@@ -20,4 +20,50 @@ body {
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  height: 37px;
 }
+
+/* #copy_room_id_div {
+  display: flex;
+  border: 2px solid blue;
+  height: 28px;
+  position: relative;
+  left: 37%;
+} */
+/* GPT */
+#insufficient_players h4 {
+  margin: 0;
+}
+
+#copy_room_id_div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+}
+
+#copy_room_id {
+  margin-right: 5px;
+  border: 2px solid black;
+  width: 75px;
+}
+
+#copy_room_id_btn {
+  cursor: pointer;
+}
+
+/* old room_copy code*/
+/*#copy_room_id_div {
+  display: flex;
+  align-items: center;
+}
+#copy_room_id_div p {
+  margin-bottom: 0px;
+  width: 100px;
+  border: 1px solid black;
+}
+
+#copy_room_id_div #copy_room_id_btn {
+  margin-left: 2px;
+} */
