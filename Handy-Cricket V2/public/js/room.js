@@ -1,4 +1,6 @@
 console.log("js working");
+let my_socket_id = null;
+// Socket.on("my_socket_id",(socket.id))
 //getting room id from url
 const path = window.location.pathname;
 const parts = path.split("/");
@@ -9,10 +11,26 @@ const messages_to_user = document.getElementById("messages_to_user");
 const insufficient_players = document.getElementById("insufficient_players");
 const copy_room_id = document.getElementById("copy_room_id");
 const copy_room_id_button = document.getElementById("copy_room_id_button");
-
-console.log(`roomid=${room_id}`);
-
+const copy_icon = document.getElementById("copy_icon");
+const choosing_values = document.getElementById("choosing_values");
+const heads = document.getElementById("heads");
+const tails = document.getElementById("tails");
+const heads_tails_opposite = {
+  heads: "tails",
+  tails: "heads",
+};
+const heads_or_tails_p = document.getElementById("heads_or_tails_p");
+let my_heads_or_tails = null;
+const toss_result_p = document.getElementById("toss_result_p");
+const bat_or_ball_button = document.getElementById("bat_or_ball_button");
 const Socket = io();
+
+Socket.emit("my_socket_id");
+
+Socket.on("my_socket_id", (socket_id) => {
+  my_socket_id = socket_id;
+  console.log(`my socketid=${my_socket_id},typeof=${typeof my_socket_id}`);
+});
 
 Socket.emit("join_room", room_id);
 copy_room_id.innerHTML = room_id;
@@ -25,11 +43,15 @@ Socket.on("alert", (message, warning_boolean = null) => {
 });
 
 copy_room_id_button.addEventListener("click", () => {
-  alert("Copied to clipboard succesfully");
   navigator.clipboard
     .writeText(room_id)
     .then(() => {
       console.log("Room ID copied to clipboard: " + room_id);
+      setTimeout(() => {
+        copy_icon.src = "../image/copy_succesfull_icon.png";
+        copy_icon.classList.remove("fade-out");
+        copy_icon.classList.add("fade-in");
+      }, 100); // Match the duration of the fade-out transition
     })
     .catch((error) => {
       console.error("Error copying to clipboard:", error);
@@ -39,4 +61,61 @@ copy_room_id_button.addEventListener("click", () => {
 Socket.on("start_match", () => {
   console.log(`start match`);
   messages_to_user.removeChild(insufficient_players);
+  choosing_values.style.display = "block";
 });
+
+heads.addEventListener("click", () => {
+  console.log(`choice heads`);
+  Socket.emit("heads_or_tails", room_id, "heads");
+  enable_disable__button("disabled", heads, tails);
+});
+
+tails.addEventListener("click", () => {
+  console.log(`choice tails`);
+  Socket.emit("heads_or_tails", room_id, "tails");
+  enable_disable__button("disabled", heads, tails);
+});
+
+Socket.on("heads_or_tails_result", (buffer) => {
+  enable_disable__button("disabled", heads, tails);
+  console.log(`${JSON.stringify(buffer)}`);
+  for (const [socket_id, heads_or_tails] of Object.entries(buffer)) {
+    if (socket_id === my_socket_id) {
+      my_heads_or_tails = heads_or_tails;
+      heads_or_tails_p.innerHTML = `You chose ${heads_or_tails}`;
+      console.log(`you are ${heads_or_tails}`);
+      document.getElementById("starting_toss").style.display = "block";
+    } else {
+      my_heads_or_tails = heads_tails_opposite[heads_or_tails];
+      heads_or_tails_p.innerHTML = `The opponent chose ${heads_or_tails}. Therefore, you get ${heads_tails_opposite[heads_or_tails]}.`;
+      console.log(`you are ${heads_tails_opposite[heads_or_tails]}`);
+    }
+  }
+});
+
+Socket.on("toss_result", (heads_or_tails) => {
+  if (my_heads_or_tails === heads_or_tails) {
+    toss_result_p.innerHTML =
+      "Congrats, You have won the Toss. Choose from the folowing";
+    bat_or_ball_button.style.display = "flex";
+  } else {
+    toss_result_p.innerHTML = "The Toss is in Opponents favour";
+  }
+});
+
+// functions
+
+function enable_disable__button(enable_or_disable, ...buttons) {
+  console.log(`disabling these buttons ${buttons}`);
+  if (enable_or_disable == "disabled") {
+    buttons.forEach((button) => {
+      button.style.cursor = "not-allowed";
+      button.disabled = true;
+    });
+  } else {
+    buttons.forEach((button) => {
+      button.style.cursor = "pointer";
+      button.disabled = false;
+    });
+  }
+}

@@ -13,11 +13,41 @@
         <h4>Waiting for the opponent to join</h4>
         <div id="copy_room_id_div">
           <p id="copy_room_id"></p>
-          <button id="copy_room_id_button">Copy</button>
+          <button id="copy_room_id_button">
+            <img
+              src="../image/copy_icon.png"
+              alt="copy_icon.png"
+              id="copy_icon"
+            />
+          </button>
         </div>
       </div>
     </div>
-    <div id="main_part"></div>
+    <div id="main_part">
+      <div id="choosing_values">
+        <div id="heads_or_tails_button">
+          <button id="heads">
+            <img src="../image/heads.png" alt="heads.png" /><br />Heads
+          </button>
+          <button id="tails">
+            <img src="../image/tails1.png" alt="tails.png" />
+            <br />Tails
+          </button>
+        </div>
+        <p id="heads_or_tails_p"></p>
+        <p id="starting_toss" style="display: none">Starting Toss....</p>
+        <p id="toss_result_p"></p>
+        <div id="bat_or_ball_button" style="display: none">
+          <button id="bat">
+            <img src="../image/bat.png" alt="bat.png" /><br />Bat
+          </button>
+          <button id="ball">
+            <img src="../image/ball.png" alt="ball.png" />
+            <br />Ball
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
   <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
   <script src="../js/room.js"></script>

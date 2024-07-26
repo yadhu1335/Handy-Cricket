@@ -70,6 +70,11 @@ io.on("connection", (socket) => {
   });
 
   //code for room.js
+
+  socket.on("my_socket_id", () => {
+    io.to(socket.id).emit("my_socket_id", socket.id);
+  });
+
   //when a user joins a room
   socket.on("join_room", (room_id) => {
     if (!Rooms[room_id]) {
@@ -96,6 +101,34 @@ io.on("connection", (socket) => {
     if (Rooms[room_id].userCount === 2) {
       io.to(room_id).emit("start_match"); //changed from socket to io bcoz it will not emit to the 2nd user who
       console.log("Number of users is 2 so everyone can start playing");
+    }
+  });
+
+  socket.on("heads_or_tails", (room_id, heads_or_tails) => {
+    console.log(`Rooms = ${JSON.stringify(Rooms)},room_id=${room_id}`);
+    if (Rooms[room_id]) {
+      const buffer_length = Object.keys(Rooms[room_id].buffer).length;
+      console.log(`Buffer length = ${buffer_length}`);
+      if (buffer_length === 0) {
+        console.log(`${socket.id} chose ${heads_or_tails}`);
+        Rooms[room_id].buffer[socket.id] = heads_or_tails;
+        console.log(
+          `After getting heads or tails = ${JSON.stringify(Rooms[room_id])}`
+        );
+        io.to(room_id).emit("heads_or_tails_result", Rooms[room_id].buffer);
+
+        const random_value = Math.floor(Math.random()); //0=heads 1=tails
+        console.log(`Random vaue=${random_value}`);
+        if (random_value == 0) {
+          io.to(room_id).emit("toss_result", "heads");
+        } else {
+          io.to(room_id).emit("toss_result", "tails");
+        }
+      }
+    } else {
+      console.error(
+        `Room ${room_id} does not exist when trying to set heads or tails`
+      );
     }
   });
 

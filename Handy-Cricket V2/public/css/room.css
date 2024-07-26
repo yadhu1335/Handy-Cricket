@@ -23,14 +23,6 @@ body {
   height: 37px;
 }
 
-/* #copy_room_id_div {
-  display: flex;
-  border: 2px solid blue;
-  height: 28px;
-  position: relative;
-  left: 37%;
-} */
-/* GPT */
 #insufficient_players h4 {
   margin: 0;
 }
@@ -43,9 +35,22 @@ body {
   right: 20px;
 }
 
+#copy_room_id_div button,
+#choosing_values button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+#copy_room_id_div img {
+  height: 18px;
+}
+
 #copy_room_id {
   margin-right: 5px;
-  border: 2px solid black;
   width: 75px;
 }
 
@@ -53,17 +58,47 @@ body {
   cursor: pointer;
 }
 
-/* old room_copy code*/
-/*#copy_room_id_div {
-  display: flex;
-  align-items: center;
-}
-#copy_room_id_div p {
-  margin-bottom: 0px;
-  width: 100px;
+#choosing_values {
+  background-color: white;
   border: 1px solid black;
 }
 
-#copy_room_id_div #copy_room_id_btn {
-  margin-left: 2px;
+#main_part {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#choosing_values {
+  display: none;
+  width: 80vw;
+  height: 80vh;
+  flex-wrap: wrap;
+  place-content: center;
+}
+
+/* #choosing_values img,
+#bat_or_ball_button img {
+  width: 15%;
 } */
+
+#heads_or_tails_button,
+#bat_or_ball_button {
+  display: flex;
+  justify-content: space-around;
+}
+
+#choosing_values p {
+  text-align: center;
+  margin: 10px auto;
+}
+
+/* class */
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
