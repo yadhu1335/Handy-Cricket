@@ -132,6 +132,20 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("bat_or_ball", (room_id, bat_or_ball) => {
+    if (Rooms[room_id]) {
+      Rooms[room_id].user_bat_ball[socket.id] = bat_or_ball;
+      console.log(
+        `${JSON.stringify(Rooms[room_id])}=${JSON.stringify(
+          Rooms[room_id].user_bat_ball
+        )}`
+      );
+      socket.to(room_id).emit("opponent_bat_or_ball", bat_or_ball);
+    } else {
+      console.log(`problem in RoomId(bat_or_ball)`);
+    }
+  });
+
   socket.on("disconnect", () => {
     if (random_room.indexOf(socket.id) != -1) {
       const index = random_room.indexOf(socket.id);
@@ -174,15 +188,14 @@ function add_room_id(room_id) {
   exisiting_room.push(room_id); //adding the room to the array
   Rooms[room_id] = {
     userCount: 0,
-    toss: {},
     buffer: {},
-    // scores: {},
-    // // game is used to save the scores of the socket.is's
-    // switch_side: false,
-    // bat: 0,
-    // bowl: 0,
-    // //bat and bowl is used to store the bat and bowl value
-    // score_to_beat: 0,
+    user_bat_ball: {},
+    scores: {}, // score is used to save the scores of the socket.is's
+    switch_side: false,
+    bat: 0,
+    bowl: 0,
+    // bat and bowl is used to store the bat and bowl value
+    score_to_beat: 0,
   }; // Initialize room with empty users array and user count 0
 }
 

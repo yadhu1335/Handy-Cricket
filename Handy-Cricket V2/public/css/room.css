@@ -59,8 +59,17 @@ body {
 }
 
 #choosing_values {
+  /* background-image: url("../image/bat_and_ball_bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; */ /* uncomment this after finding good bgimage*/
+
   background-color: white;
   border: 1px solid black;
+  display: none;
+  width: 80vw;
+  height: 80vh;
 }
 
 #main_part {
@@ -70,13 +79,13 @@ body {
   justify-content: center;
 }
 
-#choosing_values {
+/* #choosing_values {
   display: none;
   width: 80vw;
   height: 80vh;
-  flex-wrap: wrap;
-  place-content: center;
-}
+   flex-wrap: wrap;
+  place-content: center; 
+} */
 
 /* #choosing_values img,
 #bat_or_ball_button img {
@@ -87,11 +96,14 @@ body {
 #bat_or_ball_button {
   display: flex;
   justify-content: space-around;
+  margin: 25px;
 }
 
 #choosing_values p {
   text-align: center;
-  margin: 10px auto;
+  margin: 20px auto;
+  font-size: large;
+  font-weight: bold;
 }
 
 /* class */
@@ -101,4 +113,8 @@ body {
 
 .fade-in {
   opacity: 1;
+}
+
+.blur {
+  filter: blur(5px);
 }

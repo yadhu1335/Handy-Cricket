@@ -23,14 +23,9 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  /* background-image: url("../image/bg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center; */
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: center;
   align-content: center;
   flex-direction: column;

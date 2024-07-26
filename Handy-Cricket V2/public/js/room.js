@@ -6,6 +6,7 @@ const path = window.location.pathname;
 const parts = path.split("/");
 const room_id = parts[parts.length - 1];
 
+let you_are_currently = null;
 const body = document.body;
 const messages_to_user = document.getElementById("messages_to_user");
 const insufficient_players = document.getElementById("insufficient_players");
@@ -15,14 +16,23 @@ const copy_icon = document.getElementById("copy_icon");
 const choosing_values = document.getElementById("choosing_values");
 const heads = document.getElementById("heads");
 const tails = document.getElementById("tails");
-const heads_tails_opposite = {
+const opposite_value = {
   heads: "tails",
   tails: "heads",
+  bat: "ball",
+  ball: "bat",
 };
 const heads_or_tails_p = document.getElementById("heads_or_tails_p");
 let my_heads_or_tails = null;
+const starting_toss = document.getElementById("starting_toss");
 const toss_result_p = document.getElementById("toss_result_p");
 const bat_or_ball_button = document.getElementById("bat_or_ball_button");
+const bat = document.getElementById("bat");
+const ball = document.getElementById("ball");
+// const you_are_currently_p = document.getElementById("you_are_currently_p");
+// const you_are_currently_span = document.getElementById(
+//   "you_are_currently_span"
+// );
 const Socket = io();
 
 Socket.emit("my_socket_id");
@@ -84,11 +94,12 @@ Socket.on("heads_or_tails_result", (buffer) => {
       my_heads_or_tails = heads_or_tails;
       heads_or_tails_p.innerHTML = `You chose ${heads_or_tails}`;
       console.log(`you are ${heads_or_tails}`);
-      document.getElementById("starting_toss").style.display = "block";
+      starting_toss.style.display = "block";
     } else {
-      my_heads_or_tails = heads_tails_opposite[heads_or_tails];
-      heads_or_tails_p.innerHTML = `The opponent chose ${heads_or_tails}. Therefore, you get ${heads_tails_opposite[heads_or_tails]}.`;
-      console.log(`you are ${heads_tails_opposite[heads_or_tails]}`);
+      my_heads_or_tails = opposite_value[heads_or_tails];
+      heads_or_tails_p.innerHTML = `The opponent chose ${heads_or_tails}. Therefore, you get ${opposite_value[heads_or_tails]}.`;
+      console.log(`you are ${opposite_value[heads_or_tails]}`);
+      starting_toss.style.display = "block";
     }
   }
 });
@@ -103,8 +114,47 @@ Socket.on("toss_result", (heads_or_tails) => {
   }
 });
 
-// functions
+bat.addEventListener("click", () => {
+  you_are_currently = "bat";
+  console.log(`ypu are current${you_are_currently}`);
+  createTag(
+    "p",
+    `You are currently=${you_are_currently}`,
+    choosing_values,
+    "you_are_currently_p"
+  );
+  Socket.emit("bat_or_ball", room_id, "bat");
+  enable_disable__button("disabled", bat, ball);
+});
 
+ball.addEventListener("click", () => {
+  you_are_currently = "ball";
+  console.log(`ypu are current${you_are_currently}`);
+  createTag(
+    "p",
+    `You are currently=${you_are_currently}`,
+    choosing_values,
+    "you_are_currently_p"
+  );
+  Socket.emit("bat_or_ball", room_id, "ball");
+  enable_disable__button("disabled", bat, ball);
+});
+
+Socket.on("opponent_bat_or_ball", (bat_or_ball) => {
+  if (you_are_currently === null) {
+    you_are_currently = opposite_value[bat_or_ball];
+    createTag(
+      "p",
+      `You are currently=${you_are_currently}`,
+      choosing_values,
+      "you_are_currently_p"
+    );
+    console.log(`youare=${you_are_currently}`);
+  } else {
+    console.log(`you already chose`);
+  }
+});
+// functions
 function enable_disable__button(enable_or_disable, ...buttons) {
   console.log(`disabling these buttons ${buttons}`);
   if (enable_or_disable == "disabled") {
@@ -118,4 +168,18 @@ function enable_disable__button(enable_or_disable, ...buttons) {
       button.disabled = false;
     });
   }
+}
+
+//function to add tags to html
+//eg: createTag("<tag like button,p,h1-6 etc>", "msg u want to display", div where you want to place the tag, "id for the tag(not necessary)");
+function createTag(tagname, message, parentDiv, id = null, className = null) {
+  const tag = document.createElement(tagname);
+  tag.textContent = message;
+  if (id) {
+    tag.id = id;
+  }
+  if (className) {
+    tag.className = className;
+  }
+  parentDiv.appendChild(tag);
 }
