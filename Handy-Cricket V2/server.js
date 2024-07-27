@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
         );
         io.to(room_id).emit("heads_or_tails_result", Rooms[room_id].buffer);
 
-        const random_value = Math.floor(Math.random()); //0=heads 1=tails
+        const random_value = Math.floor(Math.random() * 2); //0=heads 1=tails
         console.log(`Random vaue=${random_value}`);
         if (random_value == 0) {
           io.to(room_id).emit("toss_result", "heads");

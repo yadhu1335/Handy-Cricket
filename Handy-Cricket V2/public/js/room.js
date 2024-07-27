@@ -29,10 +29,7 @@ const toss_result_p = document.getElementById("toss_result_p");
 const bat_or_ball_button = document.getElementById("bat_or_ball_button");
 const bat = document.getElementById("bat");
 const ball = document.getElementById("ball");
-// const you_are_currently_p = document.getElementById("you_are_currently_p");
-// const you_are_currently_span = document.getElementById(
-//   "you_are_currently_span"
-// );
+
 const Socket = io();
 
 Socket.emit("my_socket_id");
@@ -117,39 +114,48 @@ Socket.on("toss_result", (heads_or_tails) => {
 bat.addEventListener("click", () => {
   you_are_currently = "bat";
   console.log(`ypu are current${you_are_currently}`);
-  createTag(
-    "p",
-    `You are currently=${you_are_currently}`,
-    choosing_values,
-    "you_are_currently_p"
-  );
+  // createTag(
+  //   "p",
+  //   `You are currently=${you_are_currently}`,
+  //   choosing_values,
+  //   "you_are_currently_p"
+  // );
   Socket.emit("bat_or_ball", room_id, "bat");
   enable_disable__button("disabled", bat, ball);
+  three_times_in_bat();
+  // loading.style.display = "block";
+  // setTimeout(() => {}, 5000); // wait for 5 sec
 });
 
 ball.addEventListener("click", () => {
   you_are_currently = "ball";
   console.log(`ypu are current${you_are_currently}`);
-  createTag(
-    "p",
-    `You are currently=${you_are_currently}`,
-    choosing_values,
-    "you_are_currently_p"
-  );
+  // createTag(
+  //   "p",
+  //   `You are currently=${you_are_currently}`,
+  //   choosing_values,
+  //   "you_are_currently_p"
+  // );
   Socket.emit("bat_or_ball", room_id, "ball");
   enable_disable__button("disabled", bat, ball);
+  three_times_in_bat();
+  // loading.style.display = "block";
+  // setTimeout(() => {}, 5000); // wait for 5 sec
 });
 
 Socket.on("opponent_bat_or_ball", (bat_or_ball) => {
   if (you_are_currently === null) {
     you_are_currently = opposite_value[bat_or_ball];
-    createTag(
-      "p",
-      `You are currently=${you_are_currently}`,
-      choosing_values,
-      "you_are_currently_p"
-    );
+    three_times_in_bat();
+    // createTag(
+    //   "p",
+    //   `You are currently=${you_are_currently}`,
+    //   choosing_values,
+    //   "you_are_currently_p"
+    // );
     console.log(`youare=${you_are_currently}`);
+    // loading.style.display = "block";
+    // setTimeout(() => {}, 5000); // wait for 5 sec
   } else {
     console.log(`you already chose`);
   }
@@ -182,4 +188,17 @@ function createTag(tagname, message, parentDiv, id = null, className = null) {
     tag.className = className;
   }
   parentDiv.appendChild(tag);
+}
+
+function three_times_in_bat() {
+  createTag(
+    "p",
+    `You are currently=${you_are_currently}`,
+    choosing_values,
+    "you_are_currently_p"
+  );
+
+  createTag("p", `Loading Game...`, choosing_values, "loading");
+  // const loading = document.getElementById("loading");
+  setTimeout(() => {}, 5000); // wait for 5 sec
 }
