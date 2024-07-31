@@ -49,6 +49,55 @@
         </div>
         <!-- <p id="loading" style="display: none">Loading Game...</p> -->
       </div>
+      <div id="game_part" style="display: none">
+        <div id="top_part">
+          <p id="Warning">Warning=0</p>
+          <div id="timer"></div>
+        </div>
+        <div id="middle_part">
+          <div id="middle1">
+            <p id="you_are" style="margin-left: 25px">You are=Bat/bowl</p>
+            <p id="to_win" style="margin-right: 25px">To win=-1</p>
+          </div>
+          <div id="middle2">
+            <p id="runs"></p>
+            <p id="balls"></p>
+          </div>
+          <div id="middle3">
+            <p id="your_choice">Your choice=</p>
+            <p id="opponent_choice">opponents choice=</p>
+          </div>
+        </div>
+        <div id="last_part">
+          <button id="0">
+            <img src="../image/zero.png" alt="0.png" onclick="values(0)" />
+          </button>
+
+          <button id="1">
+            <img src="../image/one.png" alt="1.png" onclick="values(1)" />
+          </button>
+
+          <button id="2">
+            <img src="../image/two.png" alt="2.png" onclick="values(2)" />
+          </button>
+
+          <button id="3">
+            <img src="../image/three.png" alt="1.png" onclick="values(3)" />
+          </button>
+
+          <button id="4">
+            <img src="../image/four.png" alt="4.png" onclick="values(4)" />
+          </button>
+
+          <button id="5">
+            <img src="../image/five.png" alt="5.png" onclick="values(5)" />
+          </button>
+
+          <button id="6">
+            <img src="../image/six.png" alt="6.png" onclick="values(6)" />
+          </button>
+        </div>
+      </div>
     </div>
   </body>
   <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>

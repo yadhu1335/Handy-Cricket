@@ -79,19 +79,6 @@ body {
   justify-content: center;
 }
 
-/* #choosing_values {
-  display: none;
-  width: 80vw;
-  height: 80vh;
-   flex-wrap: wrap;
-  place-content: center; 
-} */
-
-/* #choosing_values img,
-#bat_or_ball_button img {
-  width: 15%;
-} */
-
 #heads_or_tails_button,
 #bat_or_ball_button {
   display: flex;
@@ -104,6 +91,93 @@ body {
   margin: 20px auto;
   font-size: large;
   font-weight: bold;
+}
+
+#game_part {
+  border: 2px solid black;
+  position: absolute;
+  top: -3%;
+  width: 95vw;
+  height: 90vh;
+}
+
+#top_part {
+  border-bottom: 2px solid black;
+  display: flex;
+  justify-content: space-between;
+}
+
+#top_part p {
+  border: 2px solid black;
+  margin-left: 3%;
+  padding: 5px;
+}
+
+#timer {
+  border: 2px solid blue;
+  width: 8%;
+  /* height: 80%; */
+  margin-right: 3%;
+  margin-top: 0.35%;
+  margin-bottom: 0.35%;
+}
+
+#middle_part p {
+  font-size: xx-large;
+}
+
+#middle1 {
+  width: 100%;
+  border-bottom: 2px solid brown;
+  display: flex;
+  justify-content: space-between;
+  /* padding: 10px 0; */
+}
+
+#middle2 {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  /* padding: 10px 0; */
+}
+
+#last_part img {
+  width: 64px;
+  height: 64px;
+}
+
+#last_part button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+#last_part {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 5%;
+  padding-top: 10px;
+}
+
+/* gpt */
+
+#middle_part {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the children elements horizontally */
+}
+#middle3 {
+  display: flex;
+  justify-content: space-around;
+  /* flex-wrap: wrap; */
+  width: 50%;
+  border: 2px solid white;
+  margin-top: 20px; /* Optional: Adds space at the top of the element */
 }
 
 /* class */

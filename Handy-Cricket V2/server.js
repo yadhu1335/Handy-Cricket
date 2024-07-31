@@ -146,6 +146,21 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("value", (value, you_are_currently, room_id) => {
+    console.log(`${socket.id}-${value},${you_are_currently},${room_id}`);
+    //  add to bufffer
+    // Rooms[room_id].buffer = {};
+    // Rooms[room_id].buffer[you_are_currently] = value;
+    // console.log(`buffer=${Rooms[room_id].buffer}`);
+    console.log(`you are currently=${you_are_currently}`);
+    if (you_are_currently === "bat") {
+      Rooms[room_id].bat = value;
+    } else {
+      Rooms[room_id].ball = value;
+    }
+    console.log(`value=${JSON.stringify(Rooms[room_id])}`);
+  });
+
   socket.on("disconnect", () => {
     if (random_room.indexOf(socket.id) != -1) {
       const index = random_room.indexOf(socket.id);
@@ -192,8 +207,8 @@ function add_room_id(room_id) {
     user_bat_ball: {},
     scores: {}, // score is used to save the scores of the socket.is's
     switch_side: false,
-    bat: 0,
-    bowl: 0,
+    bat: -1,
+    ball: -1,
     // bat and bowl is used to store the bat and bowl value
     score_to_beat: 0,
   }; // Initialize room with empty users array and user count 0

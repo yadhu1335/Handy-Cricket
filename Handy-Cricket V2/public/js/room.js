@@ -13,6 +13,7 @@ const insufficient_players = document.getElementById("insufficient_players");
 const copy_room_id = document.getElementById("copy_room_id");
 const copy_room_id_button = document.getElementById("copy_room_id_button");
 const copy_icon = document.getElementById("copy_icon");
+const main_part = document.getElementById("main_part");
 const choosing_values = document.getElementById("choosing_values");
 const heads = document.getElementById("heads");
 const tails = document.getElementById("tails");
@@ -29,6 +30,20 @@ const toss_result_p = document.getElementById("toss_result_p");
 const bat_or_ball_button = document.getElementById("bat_or_ball_button");
 const bat = document.getElementById("bat");
 const ball = document.getElementById("ball");
+const game_part = document.getElementById("game_part");
+const you_are = document.getElementById("you_are");
+let warning = 0;
+const runs = document.getElementById("runs");
+const balls = document.getElementById("balls");
+const your_choice = document.getElementById("your_choice");
+
+const zero = document.getElementById("0");
+const one = document.getElementById("1");
+const two = document.getElementById("2");
+const three = document.getElementById("3");
+const four = document.getElementById("4");
+const five = document.getElementById("5");
+const six = document.getElementById("6");
 
 const Socket = io();
 
@@ -114,48 +129,23 @@ Socket.on("toss_result", (heads_or_tails) => {
 bat.addEventListener("click", () => {
   you_are_currently = "bat";
   console.log(`ypu are current${you_are_currently}`);
-  // createTag(
-  //   "p",
-  //   `You are currently=${you_are_currently}`,
-  //   choosing_values,
-  //   "you_are_currently_p"
-  // );
   Socket.emit("bat_or_ball", room_id, "bat");
   enable_disable__button("disabled", bat, ball);
   three_times_in_bat();
-  // loading.style.display = "block";
-  // setTimeout(() => {}, 5000); // wait for 5 sec
 });
 
 ball.addEventListener("click", () => {
   you_are_currently = "ball";
-  console.log(`ypu are current${you_are_currently}`);
-  // createTag(
-  //   "p",
-  //   `You are currently=${you_are_currently}`,
-  //   choosing_values,
-  //   "you_are_currently_p"
-  // );
   Socket.emit("bat_or_ball", room_id, "ball");
   enable_disable__button("disabled", bat, ball);
   three_times_in_bat();
-  // loading.style.display = "block";
-  // setTimeout(() => {}, 5000); // wait for 5 sec
 });
 
 Socket.on("opponent_bat_or_ball", (bat_or_ball) => {
   if (you_are_currently === null) {
     you_are_currently = opposite_value[bat_or_ball];
     three_times_in_bat();
-    // createTag(
-    //   "p",
-    //   `You are currently=${you_are_currently}`,
-    //   choosing_values,
-    //   "you_are_currently_p"
-    // );
-    console.log(`youare=${you_are_currently}`);
-    // loading.style.display = "block";
-    // setTimeout(() => {}, 5000); // wait for 5 sec
+    Socket.emit("bat_or_ball", room_id, opposite_value[bat_or_ball]);
   } else {
     console.log(`you already chose`);
   }
@@ -190,6 +180,7 @@ function createTag(tagname, message, parentDiv, id = null, className = null) {
   parentDiv.appendChild(tag);
 }
 
+//couldnt name it properly
 function three_times_in_bat() {
   createTag(
     "p",
@@ -200,5 +191,24 @@ function three_times_in_bat() {
 
   createTag("p", `Loading Game...`, choosing_values, "loading");
   // const loading = document.getElementById("loading");
-  setTimeout(() => {}, 5000); // wait for 5 sec
+  // setTimeout(() => {
+  //   console.log(`3 sec passed`);
+  //   choosing_values.innerHTML = "";
+  // }, 3000); // wait for 5 sec
+  choosing_values.style.display = "none";
+  game_part.style.display = "block";
+  if (you_are_currently === "bat") {
+    you_are.innerText = `You are currently Batting`;
+  } else {
+    you_are.innerText = `You are currently Bowling`;
+  }
+  runs.innerText = `Runs:0`;
+  balls.innerText = `Balls:0`;
+}
+
+function values(value) {
+  console.log(`value=${value}`);
+  enable_disable__button("disabled", zero, one, two, three, four, five, six);
+  your_choice.innerText = `Your choice=${value}`;
+  Socket.emit("value", value, you_are_currently, room_id);
 }
