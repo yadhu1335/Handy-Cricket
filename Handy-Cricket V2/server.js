@@ -134,7 +134,7 @@ io.on("connection", (socket) => {
 
   socket.on("bat_or_ball", (room_id, bat_or_ball) => {
     if (Rooms[room_id]) {
-      Rooms[room_id].user_bat_ball[socket.id] = bat_or_ball;
+      Rooms[room_id].user_bat_ball[bat_or_ball] = socket.id; //changed
       console.log(
         `${JSON.stringify(Rooms[room_id])}=${JSON.stringify(
           Rooms[room_id].user_bat_ball
@@ -159,6 +159,36 @@ io.on("connection", (socket) => {
       Rooms[room_id].ball = value;
     }
     console.log(`value=${JSON.stringify(Rooms[room_id])}`);
+    if (Rooms[room_id].bat !== -1 && Rooms[room_id].ball !== -1) {
+      if (Rooms[room_id].bat !== Rooms[room_id].ball) {
+        if (Rooms[room_id].bat === 0) {
+          Rooms[room_id].bat += Rooms[room_id].ball;
+        } else {
+          Rooms[room_id].score += Rooms[room_id].bat; //adding the score value to bat
+        }
+        io.to(room_id).emit(
+          "runs_bat_ball",
+          Rooms[room_id].score,
+          Rooms[room_id].bat,
+          Rooms[room_id].ball
+        );
+        Rooms[room_id].bat = -1;
+        Rooms[room_id].ball = -1;
+      } else {
+        //out
+        if (Rooms[room_id].switch_side === false) {
+          Rooms[room_id].switch_side = true;
+          Rooms[room_id].score_to_beat = Rooms[room_id].score;
+          Rooms[room_id].score = 0;
+          //emit alert
+          io.to(room_id).emit("alert", "OUT!!Switching sides");
+          let temp = Rooms[room_id].bat;
+          Rooms[room_id].bat = Rooms[room_id].ball;
+          Rooms[room_id].ball = temp;
+          io.to(room_id).emit("switch_sides", Rooms[room_id].score_to_beat);
+        }
+      }
+    }
   });
 
   socket.on("disconnect", () => {
@@ -205,7 +235,8 @@ function add_room_id(room_id) {
     userCount: 0,
     buffer: {},
     user_bat_ball: {},
-    scores: {}, // score is used to save the scores of the socket.is's
+    // scores: {}, // score is used to save the scores of the socket.is's
+    score: 0,
     switch_side: false,
     bat: -1,
     ball: -1,

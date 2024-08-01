@@ -35,8 +35,9 @@ const you_are = document.getElementById("you_are");
 let warning = 0;
 const runs = document.getElementById("runs");
 const balls = document.getElementById("balls");
+let balls_value = 0;
 const your_choice = document.getElementById("your_choice");
-
+const opponent_choice = document.getElementById("opponent_choice");
 const zero = document.getElementById("0");
 const one = document.getElementById("1");
 const two = document.getElementById("2");
@@ -44,6 +45,7 @@ const three = document.getElementById("3");
 const four = document.getElementById("4");
 const five = document.getElementById("5");
 const six = document.getElementById("6");
+const to_win = document.getElementById("to_win");
 
 const Socket = io();
 
@@ -150,6 +152,33 @@ Socket.on("opponent_bat_or_ball", (bat_or_ball) => {
     console.log(`you already chose`);
   }
 });
+
+Socket.on("switch_sides", (score_to_beat) => {
+  console.log(`Switch sides`);
+  if (you_are_currently === "bat") {
+    you_are_currently = "ball";
+    you_are.innerText = "You are currently Bowling";
+  } else {
+    you_are_currently = "bat";
+    you_are.innerText = "You are currently Batting";
+  }
+  to_win.innerText = `To Win=${score_to_beat}`;
+});
+
+Socket.on("runs_bat_ball", (runs_value, bat, ball) => {
+  console.log(`Runs=${runs_value}`);
+  runs.innerText = `Runs=${runs_value}`;
+  ++balls_value;
+  balls.innerText = `Balls=${balls_value}`;
+  if (you_are_currently === "bat") {
+    console.log(`opp=${ball}`);
+    opponent_choice.innerText = `Opponents choice=${ball}`;
+  } else {
+    console.log(`opp=${bat}`);
+    opponent_choice.innerText = `Opponents choice=${bat}`;
+  }
+  enable_disable__button("enabled", zero, one, two, three, four, five, six);
+});
 // functions
 function enable_disable__button(enable_or_disable, ...buttons) {
   console.log(`disabling these buttons ${buttons}`);
@@ -208,6 +237,7 @@ function three_times_in_bat() {
 
 function values(value) {
   console.log(`value=${value}`);
+  opponent_choice.innerText = `Opponents choice=-1`;
   enable_disable__button("disabled", zero, one, two, three, four, five, six);
   your_choice.innerText = `Your choice=${value}`;
   Socket.emit("value", value, you_are_currently, room_id);
