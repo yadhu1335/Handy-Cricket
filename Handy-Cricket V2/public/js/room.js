@@ -163,6 +163,10 @@ Socket.on("switch_sides", (score_to_beat) => {
     you_are.innerText = "You are currently Batting";
   }
   to_win.innerText = `To Win=${score_to_beat}`;
+  runs.innerText = `Runs=0`;
+  balls.innerText = `Balls=0`;
+  balls_value = 0;
+  enable_disable__button("enabled", zero, one, two, three, four, five, six);
 });
 
 Socket.on("runs_bat_ball", (runs_value, bat, ball) => {
@@ -178,6 +182,28 @@ Socket.on("runs_bat_ball", (runs_value, bat, ball) => {
     opponent_choice.innerText = `Opponents choice=${bat}`;
   }
   enable_disable__button("enabled", zero, one, two, three, four, five, six);
+});
+
+Socket.on("game_over", (winner) => {
+  console.log(`winner=${winner}`);
+  switch (winner) {
+    case "bat_win":
+      if (you_are_currently === "bat") {
+        alert("you win");
+      } else {
+        alert("you lose");
+      }
+      break;
+    case "ball_win":
+      if (you_are_currently === "ball") {
+        alert("you win");
+      } else {
+        alert("you lose");
+      }
+      break;
+    default:
+      alert("Draw");
+  }
 });
 // functions
 function enable_disable__button(enable_or_disable, ...buttons) {
@@ -219,11 +245,6 @@ function three_times_in_bat() {
   );
 
   createTag("p", `Loading Game...`, choosing_values, "loading");
-  // const loading = document.getElementById("loading");
-  // setTimeout(() => {
-  //   console.log(`3 sec passed`);
-  //   choosing_values.innerHTML = "";
-  // }, 3000); // wait for 5 sec
   choosing_values.style.display = "none";
   game_part.style.display = "block";
   if (you_are_currently === "bat") {

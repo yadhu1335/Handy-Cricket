@@ -135,11 +135,11 @@ io.on("connection", (socket) => {
   socket.on("bat_or_ball", (room_id, bat_or_ball) => {
     if (Rooms[room_id]) {
       Rooms[room_id].user_bat_ball[bat_or_ball] = socket.id; //changed
-      console.log(
-        `${JSON.stringify(Rooms[room_id])}=${JSON.stringify(
-          Rooms[room_id].user_bat_ball
-        )}`
-      );
+      // console.log(
+      //   `${JSON.stringify(Rooms[room_id])}=${JSON.stringify(
+      //     Rooms[room_id].user_bat_ball
+      //   )}`
+      // );
       socket.to(room_id).emit("opponent_bat_or_ball", bat_or_ball);
     } else {
       console.log(`problem in RoomId(bat_or_ball)`);
@@ -147,25 +147,22 @@ io.on("connection", (socket) => {
   });
 
   socket.on("value", (value, you_are_currently, room_id) => {
-    console.log(`${socket.id}-${value},${you_are_currently},${room_id}`);
-    //  add to bufffer
-    // Rooms[room_id].buffer = {};
-    // Rooms[room_id].buffer[you_are_currently] = value;
-    // console.log(`buffer=${Rooms[room_id].buffer}`);
-    console.log(`you are currently=${you_are_currently}`);
+    // console.log(`${socket.id}-${value},${you_are_currently},${room_id}`);
+    // console.log(`you are currently=${you_are_currently}`);
     if (you_are_currently === "bat") {
       Rooms[room_id].bat = value;
     } else {
       Rooms[room_id].ball = value;
     }
-    console.log(`value=${JSON.stringify(Rooms[room_id])}`);
+    // console.log(`value=${JSON.stringify(Rooms[room_id])}`);
     if (Rooms[room_id].bat !== -1 && Rooms[room_id].ball !== -1) {
       if (Rooms[room_id].bat !== Rooms[room_id].ball) {
         if (Rooms[room_id].bat === 0) {
-          Rooms[room_id].bat += Rooms[room_id].ball;
+          Rooms[room_id].score += Rooms[room_id].ball;
         } else {
           Rooms[room_id].score += Rooms[room_id].bat; //adding the score value to bat
         }
+
         io.to(room_id).emit(
           "runs_bat_ball",
           Rooms[room_id].score,
@@ -174,18 +171,37 @@ io.on("connection", (socket) => {
         );
         Rooms[room_id].bat = -1;
         Rooms[room_id].ball = -1;
+
+        if (
+          Rooms[room_id].score > Rooms[room_id].score_to_beat &&
+          Rooms[room_id].switch_side == true
+        ) {
+          console.log(`Bat win`);
+          io.to(room_id).emit("game_over", "bat_win");
+        }
       } else {
         //out
         if (Rooms[room_id].switch_side === false) {
           Rooms[room_id].switch_side = true;
-          Rooms[room_id].score_to_beat = Rooms[room_id].score;
+          Rooms[room_id].score_to_beat = Rooms[room_id].score + 1;
           Rooms[room_id].score = 0;
+          Rooms[room_id].bat = -1;
+          Rooms[room_id].ball = -1;
           //emit alert
           io.to(room_id).emit("alert", "OUT!!Switching sides");
           let temp = Rooms[room_id].bat;
           Rooms[room_id].bat = Rooms[room_id].ball;
           Rooms[room_id].ball = temp;
           io.to(room_id).emit("switch_sides", Rooms[room_id].score_to_beat);
+          console.log(`out=${JSON.stringify(Rooms[room_id])}`);
+        } else {
+          // if (Rooms[room_id].score === Rooms[room_id].score_to_beat ) {
+          //   console.log(`draw`);
+          //   io.to(room_id).emit("game_over", "draw");
+          // } else {
+          console.log(`ball win`);
+          io.to(room_id).emit("game_over", "ball_win");
+          // }
         }
       }
     }
