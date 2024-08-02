@@ -5,11 +5,12 @@ body {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background-image: url("../image/room_background.jpg");
-  background-size: cover;
+  background-color: pink;
+  /* background-image: url("../image/room_background.jpg"); */
+  /* background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center;
+  background-position: center; */
 }
 
 #insufficient_players {
@@ -59,12 +60,6 @@ body {
 }
 
 #choosing_values {
-  /* background-image: url("../image/bat_and_ball_bg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center; */ /* uncomment this after finding good bgimage*/
-
   background-color: white;
   border: 1px solid black;
   display: none;
@@ -180,6 +175,33 @@ body {
   margin-top: 20px; /* Optional: Adds space at the top of the element */
 }
 
+/* #game_over {
+  border: 2px solid chocolate;
+} */
+#game_over {
+  border: 2px solid chocolate;
+  display: flex;
+  justify-content: center;
+  width: 30vw;
+  height: 17vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 3;
+}
+
+/* #p_won {
+  background-image: url("../image/won_img.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+} */
+
 /* class */
 .fade-out {
   opacity: 0;
@@ -191,4 +213,5 @@ body {
 
 .blur {
   filter: blur(5px);
+  pointer-events: none;
 }

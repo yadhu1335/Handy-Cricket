@@ -46,6 +46,7 @@ const four = document.getElementById("4");
 const five = document.getElementById("5");
 const six = document.getElementById("6");
 const to_win = document.getElementById("to_win");
+const game_over = document.getElementById("game_over");
 
 const Socket = io();
 
@@ -166,6 +167,7 @@ Socket.on("switch_sides", (score_to_beat) => {
   runs.innerText = `Runs=0`;
   balls.innerText = `Balls=0`;
   balls_value = 0;
+  your_choice.innerText = `Your choice=-1`;
   enable_disable__button("enabled", zero, one, two, three, four, five, six);
 });
 
@@ -185,19 +187,33 @@ Socket.on("runs_bat_ball", (runs_value, bat, ball) => {
 });
 
 Socket.on("game_over", (winner) => {
+  main_part.classList.add("blur");
+  game_over.style.display = "flex";
   console.log(`winner=${winner}`);
   switch (winner) {
     case "bat_win":
       if (you_are_currently === "bat") {
+        createTag("img", "", game_over, "won_img");
+        document.getElementById("won_img").src = `../image/won_img.png`;
+        // createTag("p", "You WON!!", game_over, p_won);
         alert("you win");
       } else {
+        createTag("img", "", game_over, "lost_img");
+        document.getElementById("lost_img").src = `../image/lost_img.png`;
+        // createTag("p", "You lost", game_over, p_lost);
         alert("you lose");
       }
       break;
     case "ball_win":
       if (you_are_currently === "ball") {
+        createTag("img", "", game_over, "won_img");
+        document.getElementById("won_img").src = `../image/won_img.png`;
+        // createTag("p", "You WON!!", game_over, "p_won");
         alert("you win");
       } else {
+        createTag("img", "", game_over, "lost_img");
+        document.getElementById("lost_img").src = `../image/lost_img.png`;
+        // createTag("p", "You lost", game_over, "p_lost");
         alert("you lose");
       }
       break;
