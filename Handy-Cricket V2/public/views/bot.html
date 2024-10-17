@@ -3,9 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="icon" href="../image/favicon.png" />
+    <link rel="stylesheet" href="../css/bot.css" />
+    <title>Bot</title>
   </head>
   <body>
-    <p>Bot</p>
+    <!-- <div id="messages_to_user">
+      <div id="insufficient_players">
+        <h4>Waiting for the opponent to join</h4>
+        <div id="copy_room_id_div">
+          <p id="copy_room_id"></p>
+          <button id="copy_room_id_button">
+            <img
+              src="../image/copy_icon.png"
+              alt="copy_icon.png"
+              id="copy_icon"
+            />
+          </button>
+        </div>
+      </div>
+      <div id="game_over" style="display: none"></div>
+    </div> -->
+
+    <div id="game_over" style="display: none"></div>
+
+    <div id="main_part">
+      <div id="choosing_values">
+        <div id="heads_or_tails_button">
+          <button id="heads">
+            <img src="../image/heads.png" alt="heads.png" /><br />Heads
+          </button>
+          <button id="tails">
+            <img src="../image/tails1.png" alt="tails.png" />
+            <br />Tails
+          </button>
+        </div>
+        <p id="heads_or_tails_p"></p>
+        <p id="starting_toss" style="display: none">Starting Toss....</p>
+        <p id="toss_result_p"></p>
+
+        <div id="bat_or_ball_button" style="display: none">
+          <button id="bat">
+            <img src="../image/bat.png" alt="bat.png" /><br />Bat
+          </button>
+          <button id="ball">
+            <img src="../image/ball.png" alt="ball.png" />
+            <br />Ball
+          </button>
+        </div>
+      </div>
+      <div id="game_part" style="display: none">
+        <div id="top_part">
+          <p id="Warning">Warning=0</p>
+          <div id="timer"></div>
+        </div>
+        <div id="middle_part">
+          <div id="middle1">
+            <p id="you_are" style="margin-left: 25px">You are=Bat/bowl</p>
+            <p id="to_win" style="margin-right: 25px">To win=-1</p>
+          </div>
+          <div id="middle2">
+            <p id="runs"></p>
+            <p id="balls"></p>
+          </div>
+          <div id="middle3">
+            <p id="your_choice">Your choice=</p>
+            <p id="computer_choice">Computers choice=</p>
+          </div>
+        </div>
+        <div id="last_part">
+          <button id="0" onclick="values(0)">
+            <img src="../image/zero.png" alt="0.png" />
+          </button>
+
+          <button id="1" onclick="values(1)">
+            <img src="../image/one.png" alt="1.png" />
+          </button>
+
+          <button id="2" onclick="values(2)">
+            <img src="../image/two.png" alt="2.png" />
+          </button>
+
+          <button id="3" onclick="values(3)">
+            <img src="../image/three.png" alt="3.png" />
+          </button>
+
+          <button id="4" onclick="values(4)">
+            <img src="../image/four.png" alt="4.png" />
+          </button>
+
+          <button id="5" onclick="values(5)">
+            <img src="../image/five.png" alt="5.png" />
+          </button>
+
+          <button id="6" onclick="values(6)">
+            <img src="../image/six.png" alt="6.png" />
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
+  <script src="../js/bot.js"></script>
 </html>

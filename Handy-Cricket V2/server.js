@@ -195,13 +195,8 @@ io.on("connection", (socket) => {
           io.to(room_id).emit("switch_sides", Rooms[room_id].score_to_beat);
           console.log(`out=${JSON.stringify(Rooms[room_id])}`);
         } else {
-          // if (Rooms[room_id].score === Rooms[room_id].score_to_beat ) {
-          //   console.log(`draw`);
-          //   io.to(room_id).emit("game_over", "draw");
-          // } else {
           console.log(`ball win`);
           io.to(room_id).emit("game_over", "ball_win");
-          // }
         }
       }
     }

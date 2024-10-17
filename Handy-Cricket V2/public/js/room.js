@@ -62,6 +62,9 @@ copy_room_id.innerHTML = room_id;
 
 Socket.on("alert", (message, warning_boolean = null) => {
   alert(message);
+  if (message === "Error encountered in room...Go back") {
+    window.location.href = "http://localhost:5050/";
+  }
   if (warning_boolean) {
     //should fill this when we start sending warning to the users
   }
@@ -107,12 +110,12 @@ Socket.on("heads_or_tails_result", (buffer) => {
   for (const [socket_id, heads_or_tails] of Object.entries(buffer)) {
     if (socket_id === my_socket_id) {
       my_heads_or_tails = heads_or_tails;
-      heads_or_tails_p.innerHTML = `You chose ${heads_or_tails}`;
+      heads_or_tails_p.innerText = `You chose ${heads_or_tails}`;
       console.log(`you are ${heads_or_tails}`);
       starting_toss.style.display = "block";
     } else {
       my_heads_or_tails = opposite_value[heads_or_tails];
-      heads_or_tails_p.innerHTML = `The opponent chose ${heads_or_tails}. Therefore, you get ${opposite_value[heads_or_tails]}.`;
+      heads_or_tails_p.innerText = `The opponent chose ${heads_or_tails}. Therefore, you get ${opposite_value[heads_or_tails]}.`;
       console.log(`you are ${opposite_value[heads_or_tails]}`);
       starting_toss.style.display = "block";
     }
@@ -121,11 +124,11 @@ Socket.on("heads_or_tails_result", (buffer) => {
 
 Socket.on("toss_result", (heads_or_tails) => {
   if (my_heads_or_tails === heads_or_tails) {
-    toss_result_p.innerHTML =
+    toss_result_p.innerText =
       "Congrats, You have won the Toss. Choose from the folowing";
     bat_or_ball_button.style.display = "flex";
   } else {
-    toss_result_p.innerHTML = "The Toss is in Opponents favour";
+    toss_result_p.innerText = "The Toss is in Opponents favour";
   }
 });
 
@@ -220,6 +223,12 @@ Socket.on("game_over", (winner) => {
     default:
       alert("Draw");
   }
+});
+
+Socket.on("won_by_default", (message) => {
+  console.log(`${message}`);
+  alert(`${message}`);
+  window.location.href = "http://localhost:5050/";
 });
 // functions
 function enable_disable__button(enable_or_disable, ...buttons) {
