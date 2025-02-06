@@ -41,3 +41,7 @@ To do in the future
 
 1. Add a predict and predictleast function for values insted of relieng on random numbers.-[] <br/>
 2. Multiplayer game -[X](In roll_cricket_multiplayer branch)</p>
+
+
+Immediate Improvements
+1.Create a env file and add the url to that, so insted of redirecting to localhost:5050 we will redirect to the correct url.
